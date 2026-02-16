@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RMR2 Phased Study Design & Analysis Framework</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace; }
+
+    /* Tab styling */
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .tab-button:hover { background: #f1f5f9; }
+    .tab-button.active {
+      border-bottom-color: #6366f1;
+      color: #4f46e5;
+      background: #eef2ff;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Framework tab styles */
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background-color: #f8fafc; font-weight: 600; }
+    tr:nth-child(even) { background-color: #f8fafc; }
+
+    .section { margin-bottom: 2.5rem; padding-top: 1rem; }
+    .section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 1rem;
+    }
+    .section h3 { font-size: 1.15rem; font-weight: 600; color: #334155; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+    .section h4 { font-size: 1rem; font-weight: 600; color: #475569; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+    .section p { color: #475569; line-height: 1.7; margin-bottom: 0.75rem; }
+
+    .callout { padding: 1rem 1.25rem; border-radius: 0.5rem; margin: 1rem 0; }
+    .callout-amber { background: #fffbeb; border: 1px solid #fcd34d; }
+    .callout-blue { background: #eff6ff; border: 1px solid #93c5fd; }
+    .callout-green { background: #f0fdf4; border: 1px solid #86efac; }
+    .callout-red { background: #fef2f2; border: 1px solid #fca5a5; }
+    .callout-slate { background: #f8fafc; border: 1px solid #cbd5e1; }
+    .callout-cyan { background: #ecf9ff; border: 1px solid #67e8f9; }
+
+    .decision-tree {
+      background: #f8fafc;
+      border-left: 4px solid #6366f1;
+      padding: 1rem 1.5rem;
+      margin: 1rem 0;
+      font-family: ui-monospace, monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+    }
+
+    /* Diagram styles */
+    .intervention-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .intervention-card { background: #f5f3ff; border: 1px solid #c4b5fd; border-radius: 0.5rem; padding: 0.75rem; text-align: center; }
+    .diagram-card { background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+    /* Framework navigation */
+    .framework-nav {
+      position: sticky;
+      top: 60px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .framework-nav a {
+      display: block;
+      padding: 0.25rem 0.5rem;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.8125rem;
+      border-radius: 0.25rem;
+    }
+    .framework-nav a:hover { background: #e2e8f0; color: #334155; }
+    .framework-nav a.nav-section { font-weight: 600; color: #334155; margin-top: 0.5rem; }
+
+      /* Collapsible styling */
+      details summary {
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details[open] summary .chevron {
+        transform: rotate(90deg);
+      }
+      details summary:hover {
+        filter: brightness(0.95);
+      }
+      .chevron {
+        transition: transform 0.2s ease;
+        display: inline-block;
+      }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Header -->
+  <div class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between py-4">
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">RMR2 Phased Study Design & Analysis Framework</h1>
+          <p class="text-sm text-slate-500">LEV Foundation | February 2026</p>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1">
+        <button class="tab-button active" onclick="showTab('diagram')">
+          📊 Visual Overview
+        </button>
+        <button class="tab-button" onclick="showTab('framework')">
+          📄 Detailed Framework
+        </button>
+        <button class="tab-button" onclick="showTab('whyx')">
+          🔍 Why X Might Not Add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DIAGRAM TAB ==================== -->
+  <div id="diagram-tab" class="tab-content active">
+    <div class="max-w-6xl mx-auto p-6">
+
+      <!-- Strategic Rationale Banner -->
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+        <div class="flex items-start gap-3">
+          <div class="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-lg font-bold">!</span>
+          </div>
+          <div>
+            <h3 class="font-semibold text-amber-900 mb-1">Strategic Rationale</h3>
+            <p class="text-amber-800 text-sm mb-2">
+              <strong>Rapamycin (r)</strong> is the benchmark—the best-known mouse lifespan intervention (~25-30% extension).
+              However, mTOR-axis interventions have not translated effectively to humans.
+            </p>
+            <p class="text-amber-800 text-sm">
+              <strong>Goal:</strong> Find a combination <strong>E</strong> that significantly exceeds rapamycin (E &gt; r),
+              ideally without requiring rapamycin (E ≈ rE). This suggests the combination works through mechanisms
+              distinct from rapamycin—better candidates for human translation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Epistemological Foundation -->
+      <div class="bg-slate-100 border border-slate-300 rounded-lg p-4 mb-6">
+        <h3 class="font-semibold text-slate-800 mb-2">Operating Principle: Mechanistic Uncertainty</h3>
+        <p class="text-slate-700 text-sm mb-2">
+          We lack complete mechanistic understanding of how <em>any</em> intervention extends lifespan.
+          Rather than assume biology, we use <strong>empirical inference</strong> from outcomes.
+        </p>
+        <div class="bg-white rounded p-3 mt-2">
+          <p class="text-sm text-slate-600">
+            <strong>Operational definition of "functional rapalog":</strong> An intervention that provides no additional
+            benefit when combined with rapamycin (rX ≈ r), suggesting it achieves the same outcome through
+            overlapping or redundant means—regardless of whether we know the mechanism.
+          </p>
+          <p class="text-sm text-slate-500 mt-2 italic">
+            <strong>Caveat:</strong> rX ≈ r does NOT automatically mean X is a functional rapalog.
+            Structural masking (X addresses damage that isn't rate-limiting after r) or network masking (X's effects
+            are blocked by r's network changes) can produce the same pattern. Secondary endpoints are diagnostic—see Detailed Framework.
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Flow -->
+      <div class="space-y-6">
+
+        <!-- Pilots Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-violet-100 text-violet-700 px-3 py-1 rounded-full text-sm font-medium">Current Stage</div>
+            <h2 class="text-xl font-semibold text-slate-800">Pilot Validation Studies</h2>
+          </div>
+          <p class="text-slate-600 mb-4">8 interventions · Validation & de-risking before Phase 1</p>
+
+          <div class="intervention-grid">
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>1</sub></div><div class="text-sm font-medium text-violet-800">OSK</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>2</sub></div><div class="text-sm font-medium text-violet-800">d-PUFAs</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>3</sub></div><div class="text-sm font-medium text-violet-800">Oxytocin</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>4</sub></div><div class="text-sm font-medium text-violet-800">CASIN</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>5</sub></div><div class="text-sm font-medium text-violet-800">Anti-IL-11</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>6</sub></div><div class="text-sm font-medium text-violet-800">Exosomes</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>7</sub></div><div class="text-sm font-medium text-violet-800">Senolytic</div></div>
+            <div class="intervention-card"><div class="text-xs text-violet-500 mb-1">X<sub>8</sub></div><div class="text-sm font-medium text-violet-800">rMSA</div></div>
+          </div>
+
+          <div class="mt-4 p-3 bg-violet-50 rounded-lg">
+            <p class="text-sm text-violet-700">
+              <strong>Selection basis:</strong> Interventions chosen to address largely different types of damage (distinct primary targets)
+              with known lifespan-extending effects—intentionally avoiding likely functional rapalogs.
+            </p>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="flex justify-center">
+          <div class="flex flex-col items-center text-slate-400">
+            <div class="w-0.5 h-4 bg-slate-300"></div>
+            <div class="text-xs text-slate-500 my-1">GO/NO-GO per intervention</div>
+            <div class="w-0.5 h-4 bg-slate-300"></div>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+          </div>
+        </div>
+
+        <!-- Phase 1 Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Phase 1</div>
+            <h2 class="text-xl font-semibold text-slate-800">Monotherapy & Full Combination Testing</h2>
+          </div>
+          <p class="text-slate-600 mb-6">1,200 mice · 20 groups · n=25-50 per sex per group</p>
+
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Without Rapamycin -->
+            <div class="space-y-3">
+              <div class="text-center text-sm font-medium text-slate-500 pb-2 border-b border-slate-200">Without Rapamycin</div>
+              <div class="bg-slate-100 border border-slate-300 rounded-lg p-3">
+                <div class="flex justify-between items-center">
+                  <span class="font-medium text-slate-700">C</span>
+                  <span class="text-sm text-slate-500">Vehicle Control</span>
+                  <span class="text-xs bg-slate-200 px-2 py-0.5 rounded">n=100</span>
+                </div>
+              </div>
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium text-blue-700">X<sub>1</sub> – X<sub>8</sub></span>
+                  <span class="text-sm text-blue-600">Monotherapies</span>
+                  <span class="text-xs bg-blue-100 px-2 py-0.5 rounded">n=50 each</span>
+                </div>
+                <div class="text-xs text-blue-500">8 groups × 50 mice = 400 mice</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                <div class="flex justify-between items-center">
+                  <span class="font-medium text-emerald-700">E</span>
+                  <span class="text-sm text-emerald-600">All 8 Combined</span>
+                  <span class="text-xs bg-emerald-100 px-2 py-0.5 rounded">n=100</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- With Rapamycin -->
+            <div class="space-y-3">
+              <div class="text-center text-sm font-medium text-amber-600 pb-2 border-b border-amber-200">With Rapamycin (benchmark modifier)</div>
+              <div class="bg-amber-50 border border-amber-300 rounded-lg p-3">
+                <div class="flex justify-between items-center">
+                  <span class="font-medium text-amber-700">r</span>
+                  <span class="text-sm text-amber-600">Rapamycin Only (benchmark)</span>
+                  <span class="text-xs bg-amber-100 px-2 py-0.5 rounded">n=100</span>
+                </div>
+              </div>
+              <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium text-orange-700">rX<sub>1</sub> – rX<sub>8</sub></span>
+                  <span class="text-sm text-orange-600">Mono + Rapa</span>
+                  <span class="text-xs bg-orange-100 px-2 py-0.5 rounded">n=50 each</span>
+                </div>
+                <div class="text-xs text-orange-500">8 groups × 50 mice = 400 mice</div>
+              </div>
+              <div class="bg-rose-50 border border-rose-200 rounded-lg p-3">
+                <div class="flex justify-between items-center">
+                  <span class="font-medium text-rose-700">rE</span>
+                  <span class="text-sm text-rose-600">All 8 + Rapa</span>
+                  <span class="text-xs bg-rose-100 px-2 py-0.5 rounded">n=100</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 1 Summary -->
+          <div class="mt-6 pt-4 border-t border-slate-200">
+            <div class="flex justify-around text-center">
+              <div><div class="text-2xl font-bold text-slate-800">20</div><div class="text-xs text-slate-500">Groups</div></div>
+              <div><div class="text-2xl font-bold text-slate-800">1,200</div><div class="text-xs text-slate-500">Total Mice</div></div>
+              <div><div class="text-2xl font-bold text-slate-800">600</div><div class="text-xs text-slate-500">Per Sex</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operating Principle Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="font-semibold text-slate-800 mb-4">1.4 The Damage Network</h3>
+          <p class="text-slate-600 mb-4">
+            Aging involves multiple damage types that are <strong>interconnected rather than independent</strong>. Damage type A may accelerate B; B may accelerate C; C may feed back to A. Interventions have primary targets, but effects propagate through this network via crosstalk and knock-on effects.
+          </p>
+
+          <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4 mb-4">
+            <h4 class="font-semibold text-cyan-800 mb-3">Critical Implications</h4>
+            <ul class="list-disc ml-6 text-sm text-cyan-900 space-y-2">
+              <li>An intervention addressing damage type A may extend lifespan even if A is not itself rate-limiting, provided A's downstream effects include rate-limiting damage types</li>
+              <li>An intervention may appear to "overlap" with rapamycin not because they share a molecular target, but because their effects converge through network propagation</li>
+              <li>The position of a damage type in the network (upstream hub vs. peripheral node) matters as much as whether it is rate-limiting</li>
+              <li>Interventions affecting upstream hubs that cascade to multiple rate-limiters have higher potential value than those addressing peripheral nodes</li>
+            </ul>
+          </div>
+
+          <p class="text-sm text-slate-600 mb-4 italic">
+            We cannot map the full mouse damage network, let alone the human one. But we can use empirical signals to infer network relationships and make probabilistic judgments about translation potential.
+          </p>
+
+          <div class="bg-slate-100 rounded-lg p-4">
+            <h4 class="font-semibold text-slate-800 mb-3 text-sm">Network Position Terminology</h4>
+            <table class="text-sm">
+              <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Upstream hub</strong></td><td>Damage type whose accumulation drives multiple downstream damage types; addressing it has broad effects</td></tr>
+                <tr><td><strong>Downstream node</strong></td><td>Damage type driven by upstream processes; addressing it may have limited effect if upstream drivers continue</td></tr>
+                <tr><td><strong>Peripheral node</strong></td><td>Damage type with limited connections; addressing it affects only itself unless it happens to be rate-limiting</td></tr>
+                <tr><td><strong>Cascade</strong></td><td>The propagation of an intervention's effects through network connections (knock-on effects)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Secondary Endpoints Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="font-semibold text-slate-800 mb-4">Data Collection: Beyond Lifespan</h3>
+          <p class="text-sm text-slate-600 mb-4">
+            While lifespan is the primary endpoint, extensive secondary data enables earlier signal detection,
+            richer interpretation of ambiguous results, and post-hoc mechanistic analysis.
+          </p>
+
+          <div class="grid grid-cols-3 gap-4">
+            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+              <h4 class="font-medium text-indigo-800 mb-2 text-sm">Functional Assessments</h4>
+              <ul class="text-xs text-indigo-700 space-y-1">
+                <li>• Grip strength</li>
+                <li>• Running wheel activity</li>
+                <li>• Cognitive tests (Barnes maze)</li>
+                <li>• Motor coordination (rotarod)</li>
+              </ul>
+              <div class="mt-2 pt-2 border-t border-indigo-200"><span class="text-xs text-indigo-600 italic">Longitudinal, in-life</span></div>
+            </div>
+            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+              <h4 class="font-medium text-teal-800 mb-2 text-sm">Clinical Evaluation</h4>
+              <ul class="text-xs text-teal-700 space-y-1">
+                <li>• Frailty index assessments</li>
+                <li>• Body weight tracking</li>
+                <li>• CBC & blood chemistries</li>
+                <li>• Glucose tolerance testing</li>
+              </ul>
+              <div class="mt-2 pt-2 border-t border-teal-200"><span class="text-xs text-teal-600 italic">Longitudinal, in-life</span></div>
+            </div>
+            <div class="bg-fuchsia-50 border border-fuchsia-200 rounded-lg p-4">
+              <h4 class="font-medium text-fuchsia-800 mb-2 text-sm">Tissue Banking</h4>
+              <ul class="text-xs text-fuchsia-700 space-y-1">
+                <li>• Full necropsy at death</li>
+                <li>• Blood & all tissues banked</li>
+                <li>• Enables post-hoc analysis:</li>
+                <li class="pl-2">- mTOR markers, epi clocks</li>
+                <li class="pl-2">- Senescence, inflammation</li>
+              </ul>
+              <div class="mt-2 pt-2 border-t border-fuchsia-200"><span class="text-xs text-fuchsia-600 italic">Terminal & interim</span></div>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 bg-slate-100 rounded-lg">
+            <p class="text-sm text-slate-700">
+              <strong>Strategic value:</strong> Secondary endpoints are <em>diagnostic</em> for distinguishing overlap from masking and network masking
+              when rX ≈ r on lifespan. If X improves its target biomarkers in rX (vs r), X is working—it's just masked.
+            </p>
+          </div>
+        </div>
+
+        <!-- Analysis Framework -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="font-semibold text-slate-800 mb-4">Phase 1 Analysis Framework</h3>
+
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Individual Level -->
+            <div class="space-y-3">
+              <h4 class="font-medium text-slate-700 text-sm border-b pb-2">Individual Intervention Analysis</h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center gap-2 p-2 bg-slate-50 rounded">
+                  <span class="font-mono text-slate-600 w-16 flex-shrink-0">X vs C</span>
+                  <span class="text-slate-500">→</span>
+                  <span class="text-slate-700">Does X have any independent effect?</span>
+                </div>
+                <div class="flex items-center gap-2 p-2 bg-slate-50 rounded">
+                  <span class="font-mono text-slate-600 w-16 flex-shrink-0">X vs r</span>
+                  <span class="text-slate-500">→</span>
+                  <span class="text-slate-700">How does X compare to benchmark?</span>
+                </div>
+                <div class="flex items-center gap-2 p-2 bg-blue-50 rounded border border-blue-200">
+                  <span class="font-mono text-blue-700 font-semibold w-16 flex-shrink-0">rX vs r</span>
+                  <span class="text-blue-500">→</span>
+                  <span class="text-blue-800">Does X add to rapamycin? <strong>(Key test)</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Combination Level -->
+            <div class="space-y-3">
+              <h4 class="font-medium text-slate-700 text-sm border-b pb-2">Combination Analysis</h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center gap-2 p-2 bg-emerald-50 rounded border border-emerald-200">
+                  <span class="font-mono text-emerald-700 font-semibold w-16 flex-shrink-0">E vs r</span>
+                  <span class="text-emerald-500">→</span>
+                  <span class="text-emerald-800">Does combination beat rapamycin? <strong>(Primary goal)</strong></span>
+                </div>
+                <div class="flex items-center gap-2 p-2 bg-purple-50 rounded border border-purple-200">
+                  <span class="font-mono text-purple-700 font-semibold w-16 flex-shrink-0">rE vs E</span>
+                  <span class="text-purple-500">→</span>
+                  <span class="text-purple-800">Does rapamycin add to combination? <strong>(Translation signal)</strong></span>
+                </div>
+                <div class="flex items-center gap-2 p-2 bg-slate-50 rounded">
+                  <span class="font-mono text-slate-600 w-16 flex-shrink-0">rE vs r</span>
+                  <span class="text-slate-500">→</span>
+                  <span class="text-slate-700">Does combination contribute beyond rapamycin?</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 bg-slate-100 rounded-lg">
+            <p class="text-sm text-slate-700">
+              <strong>Cross-referencing logic:</strong> Individual patterns (rX vs r) generate hypotheses about which
+              interventions may be functional rapalogs. Combination patterns (E, rE) test whether those hypotheses matter at scale.
+            </p>
+          </div>
+        </div>
+
+        <!-- Scenario Interpretation -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="font-semibold text-slate-800 mb-4">Interpreting Individual Patterns: rX vs r</h3>
+
+          <div class="space-y-3">
+            <!-- rX > r -->
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono font-bold text-green-700 text-lg">rX &gt; r</span>
+                <span class="text-green-600 font-medium">Synergy with rapamycin</span>
+              </div>
+              <p class="text-sm text-green-800 mb-2">X adds benefit beyond rapamycin alone. Suggests X acts through pathway independent of mTOR inhibition.</p>
+              <div class="text-xs text-green-700 bg-green-100 px-2 py-1 rounded inline-block">✓ Keep in combination — promising for translation</div>
+            </div>
+
+            <!-- rX ≈ r -->
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono font-bold text-amber-700 text-lg">rX ≈ r</span>
+                <span class="text-amber-600 font-medium">No additional benefit</span>
+              </div>
+              <p class="text-sm text-amber-800 mb-2"><strong>Three competing explanations:</strong></p>
+              <div class="grid grid-cols-3 gap-2 mb-2">
+                <div class="bg-red-100 p-2 rounded text-xs border border-red-200">
+                  <strong class="text-red-900">1. Target overlap:</strong>
+                  <span class="text-red-800"> X works through same/similar pathway as rapamycin</span>
+                  <div class="mt-1 text-red-600 font-medium">Translation: Poor</div>
+                </div>
+                <div class="bg-green-100 p-2 rounded text-xs border border-green-200">
+                  <strong class="text-green-900">2. Damage-type masking:</strong>
+                  <span class="text-green-800"> X works independently, but addresses damage not rate-limiting after r</span>
+                  <div class="mt-1 text-green-600 font-medium">Translation: Good</div>
+                </div>
+                <div class="bg-purple-100 p-2 rounded text-xs border border-purple-200">
+                  <strong class="text-purple-900">3. Network masking:</strong>
+                  <span class="text-purple-800"> X's effects propagate through nodes that r has already addressed</span>
+                  <div class="mt-1 text-purple-600 font-medium">Translation: Good (humans lack r)</div>
+                </div>
+              </div>
+              <div class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded inline-block">? Do NOT auto-classify as rapalog — use secondary endpoints to distinguish</div>
+            </div>
+
+            <!-- rX < r -->
+            <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono font-bold text-red-700 text-lg">rX &lt; r</span>
+                <span class="text-red-600 font-medium">Antagonism with rapamycin</span>
+              </div>
+              <p class="text-sm text-red-800 mb-2">X actively reduces rapamycin's benefit. Could indicate pharmacological interference or biological counter-regulation.</p>
+              <div class="text-xs text-red-700 bg-red-100 px-2 py-1 rounded inline-block">✗ Test E-X and rE-X — likely dragging down combination</div>
+            </div>
+          </div>
+
+          <!-- Distinguishing explanations -->
+          <div class="mt-4 p-4 bg-slate-100 rounded-lg">
+            <h4 class="font-medium text-slate-800 mb-2 text-sm">Distinguishing the Three Explanations (when rX ≈ r)</h4>
+            <div class="space-y-2 text-sm text-slate-700">
+              <div class="flex items-start gap-2">
+                <span class="text-slate-400">1.</span>
+                <span><strong>Biomarker analysis:</strong> Does rX show improved biomarkers for X's target vs r? Yes → Masking/Network. No → Possibly overlap.</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-slate-400">2.</span>
+                <span><strong>mTOR pathway markers:</strong> Does X affect p-S6K1, p-4EBP1? Yes → Target overlap. No → X is mechanistically independent.</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-slate-400">3.</span>
+                <span><strong>Cause-of-death analysis:</strong> Does r shift COD distribution differently than X? Different shifts → supports masking/network masking.</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-slate-400">4.</span>
+                <span><strong>Cross-intervention pattern:</strong> If most/all rX ≈ r → ceiling or network effects. If only specific rX ≈ r → those X's may overlap.</span>
+              </div>
+            </div>
+            <div class="mt-3 p-2 bg-green-100 rounded text-xs text-green-800 border border-green-200">
+              <strong>Key insight:</strong> Masking or network masking means X may still work in humans where the damage hierarchy or network topology differs.
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision Tree -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="font-semibold text-slate-800 mb-4">Phase 1 → Phase 2 Decision Logic</h3>
+
+          <!-- Primary Decision: E vs r -->
+          <div class="space-y-4">
+            <div class="border-l-4 border-emerald-500 pl-4">
+              <h4 class="font-medium text-slate-800 mb-2">Primary Question: E vs r</h4>
+              <div class="space-y-2">
+                <div class="flex items-start gap-2 p-2 bg-emerald-50 rounded">
+                  <span class="font-mono text-emerald-700 font-bold w-20 flex-shrink-0">E &gt; r</span>
+                  <div>
+                    <span class="text-emerald-800 font-medium">PRIMARY GOAL ACHIEVED</span>
+                    <p class="text-xs text-emerald-700 mt-1">Proceed to optimization: which X's are essential vs. passengers?</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 p-2 bg-amber-50 rounded">
+                  <span class="font-mono text-amber-700 font-bold w-20 flex-shrink-0">E ≈ r</span>
+                  <div>
+                    <span class="text-amber-800 font-medium">Combination matches but doesn't beat benchmark</span>
+                    <p class="text-xs text-amber-700 mt-1">Look for redundancy or antagonism among interventions</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 p-2 bg-red-50 rounded">
+                  <span class="font-mono text-red-700 font-bold w-20 flex-shrink-0">E &lt; r</span>
+                  <div>
+                    <span class="text-red-800 font-medium">Combination underperforms — something is wrong</span>
+                    <p class="text-xs text-red-700 mt-1">Investigate interactions; prioritize E-X testing for interventions where rX ≤ r</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-l-4 border-purple-500 pl-4">
+              <h4 class="font-medium text-slate-800 mb-2">Translation Signal: rE vs E</h4>
+              <div class="space-y-2">
+                <div class="flex items-start gap-2 p-2 bg-purple-50 rounded">
+                  <span class="font-mono text-purple-700 font-bold w-20 flex-shrink-0">rE &gt;&gt; E</span>
+                  <div>
+                    <span class="text-purple-800 font-medium">Rapamycin adds substantial value</span>
+                    <p class="text-xs text-purple-700 mt-1">Combination alone may be insufficient; combination doesn't fully cover rapamycin's mechanisms</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 p-2 bg-green-50 rounded border border-green-200">
+                  <span class="font-mono text-green-700 font-bold w-20 flex-shrink-0">rE ≈ E</span>
+                  <div>
+                    <span class="text-green-800 font-medium">Rapamycin adds nothing — IDEAL for translation</span>
+                    <p class="text-xs text-green-700 mt-1">Combination covers rapamycin's function through (presumably) different mechanisms</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 p-2 bg-red-50 rounded">
+                  <span class="font-mono text-red-700 font-bold w-20 flex-shrink-0">rE &lt; E</span>
+                  <div>
+                    <span class="text-red-800 font-medium">Rapamycin antagonizes combination (surprising)</span>
+                    <p class="text-xs text-red-700 mt-1">Investigate which components conflict with rapamycin</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Best Case -->
+          <div class="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-lg">
+            <h4 class="font-semibold text-green-800 mb-2">Best Case Scenario</h4>
+            <div class="flex items-center gap-4">
+              <div class="font-mono text-lg text-green-700 font-bold">E &gt;&gt; r</div>
+              <span class="text-green-600">AND</span>
+              <div class="font-mono text-lg text-green-700 font-bold">E ≥ rE</div>
+            </div>
+            <p class="text-sm text-green-700 mt-2">
+              Combination dramatically exceeds rapamycin benchmark, and rapamycin doesn't add value.
+              Strong candidate for human translation—effects likely achieved through non-mTOR mechanisms.
+            </p>
+          </div>
+        </div>
+
+        <!-- Arrow to Phase 2 -->
+        <div class="flex justify-center">
+          <div class="flex flex-col items-center text-slate-400">
+            <div class="w-0.5 h-6 bg-slate-300"></div>
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+          </div>
+        </div>
+
+        <!-- Phase 2 Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">Phase 2</div>
+            <h2 class="text-xl font-semibold text-slate-800">Subtractive Combination Testing</h2>
+            <span class="text-sm text-slate-400">(Conditional on Phase 1 results)</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div class="font-medium text-purple-800 mb-2">E – X<sub>i</sub></div>
+              <div class="text-sm text-purple-600">Full combination minus intervention i</div>
+            </div>
+            <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div class="font-medium text-purple-800 mb-2">rE – X<sub>i</sub></div>
+              <div class="text-sm text-purple-600">Full combination + rapa minus intervention i</div>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-sm">
+            <h4 class="font-medium text-slate-700">Phase 2 triggers:</h4>
+            <div class="grid grid-cols-1 gap-2">
+              <div class="flex items-start gap-2 p-2 bg-slate-50 rounded">
+                <span class="text-green-600 font-bold">If E &gt; r, E ≈ rE:</span>
+                <span class="text-slate-700">Test E-X<sub>i</sub> to find <em>minimal effective combination</em> (optimization)</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-slate-50 rounded">
+                <span class="text-amber-600 font-bold">If E underperforms:</span>
+                <span class="text-slate-700">Test E-X<sub>i</sub> to find <em>antagonists</em> (prioritize X where rX ≤ r)</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-slate-50 rounded">
+                <span class="text-purple-600 font-bold">If specific pairs suspected:</span>
+                <span class="text-slate-700">Consider targeted pair testing (X<sub>i</sub> + X<sub>j</sub>) or double subtractions</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-purple-200 text-center">
+            <span class="text-sm text-purple-700">~800 additional mice (variable based on Phase 1 results)</span>
+          </div>
+        </div>
+
+        <!-- Limitations Note -->
+        <div class="bg-slate-100 border border-slate-300 rounded-lg p-4">
+          <h3 class="font-semibold text-slate-700 mb-2 text-sm">Design Limitations & Considerations</h3>
+          <div class="grid grid-cols-4 gap-3 text-xs text-slate-600">
+            <div>
+              <strong class="text-slate-700">Higher-order interactions:</strong> Pairwise X<sub>i</sub>-X<sub>j</sub> antagonism
+              cannot be detected in Phase 1—only visible through E underperformance.
+            </div>
+            <div>
+              <strong class="text-slate-700">Statistical power:</strong> With n=50 per monotherapy group, detecting
+              small effect size differences (5-10%) may be challenging.
+            </div>
+            <div>
+              <strong class="text-slate-700">Masking/Network effects:</strong> rX ≈ r may reflect masking or network masking rather than overlap.
+              Secondary endpoints and COD analysis are diagnostic.
+            </div>
+            <div>
+              <strong class="text-slate-700">Dosing assumptions:</strong> Doses derived from monotherapy studies without rapamycin.
+              PK interactions may shift optimal doses.
+            </div>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+          <h3 class="font-semibold text-slate-700 mb-3 text-sm">Notation Key</h3>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+            <div class="flex items-center gap-2">
+              <span class="font-mono bg-slate-100 px-2 py-0.5 rounded">C</span>
+              <span class="text-slate-600">Vehicle control</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono bg-slate-100 px-2 py-0.5 rounded">r</span>
+              <span class="text-slate-600">Rapamycin only (benchmark)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono bg-slate-100 px-2 py-0.5 rounded">X</span>
+              <span class="text-slate-600">Single intervention</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono bg-slate-100 px-2 py-0.5 rounded">rX</span>
+              <span class="text-slate-600">Intervention + rapamycin</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono bg-slate-100 px-2 py-0.5 rounded">E</span>
+              <span class="text-slate-600">All 8 interventions</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-8 pt-4 border-t border-slate-200">
+        <div class="text-center text-xs text-slate-400">
+          LEV Foundation | RMR2 Phased Study Design & Analysis Framework | February 2026
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FRAMEWORK TAB ==================== -->
+  <div id="framework-tab" class="tab-content">
+    <div class="max-w-6xl mx-auto p-6">
+      <div class="flex gap-6">
+
+        <!-- Navigation sidebar -->
+        <div class="w-64 flex-shrink-0 hidden lg:block">
+          <div class="framework-nav">
+            <div class="text-xs text-slate-500 mb-3 uppercase tracking-wide">Contents</div>
+            <a href="#fw-1" class="nav-section">1. Strategic Context</a>
+            <a href="#fw-1-1">1.1 Program Overview</a>
+            <a href="#fw-1-2">1.2 Rapamycin Benchmark</a>
+            <a href="#fw-1-3">1.3 Mechanistic Uncertainty</a>
+            <a href="#fw-1-4">1.4 The Damage Network</a>
+            <a href="#fw-1-5">1.5 Intervention Selection</a>
+
+            <a href="#fw-2" class="nav-section">2. Phase 1 Design</a>
+            <a href="#fw-2-1">2.1 Group Structure</a>
+            <a href="#fw-2-2">2.2 Design Rationale</a>
+
+            <a href="#fw-3" class="nav-section">3. Analysis Framework</a>
+            <a href="#fw-3-1">3.1 Individual Patterns (rX vs r)</a>
+            <a href="#fw-3-2">3.2 Combination Patterns</a>
+            <a href="#fw-3-3">3.3 Best Case Scenario</a>
+
+            <a href="#fw-4" class="nav-section">4. Secondary Endpoints</a>
+
+            <a href="#fw-5" class="nav-section">5. Phase 2 Logic</a>
+            <a href="#fw-6" class="nav-section">6. Pairwise Interactions</a>
+            <a href="#fw-7" class="nav-section">7. Design Limitations</a>
+            <a href="#fw-8" class="nav-section">8. Key Comparisons</a>
+            <a href="#fw-9" class="nav-section">9. Glossary</a>
+            <a href="#fw-10" class="nav-section">10. Appendix</a>
+          </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+
+          <!-- Section 1 -->
+          <div id="fw-1" class="section">
+            <h2>1. Strategic Context</h2>
+
+            <h3 id="fw-1-1">1.1 Program Overview</h3>
+            <p>RMR2 is a comprehensive longevity study testing the combined effects of eight interventions on mouse lifespan. The program follows a phased approach:</p>
+
+            <table>
+              <thead><tr><th>Phase</th><th>Purpose</th><th>Scale</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Pilots</strong> (current)</td><td>Validation & de-risking</td><td>~200 mice total</td></tr>
+                <tr><td><strong>Phase 1</strong></td><td>Monotherapy + full combination testing</td><td>1,200 mice</td></tr>
+                <tr><td><strong>Phase 2</strong></td><td>Subtractive combination testing</td><td>~800 mice (variable)</td></tr>
+                <tr><td><strong>Total</strong></td><td></td><td>~2,000 mice</td></tr>
+              </tbody>
+            </table>
+
+            <p><strong>Target outcome:</strong> Double remaining lifespan from 18 months of age (~100% extension). Any statistically significant result where E > r (combination exceeds rapamycin) constitutes success.</p>
+
+            <h3 id="fw-1-2">1.2 The Rapamycin Benchmark</h3>
+            <p>Rapamycin (r) serves as the benchmark intervention for this study. It is the best-characterized lifespan-extending intervention in mice, typically producing ~25-30% lifespan extension with highly reproducible results across laboratories.</p>
+            <p>However, mTOR-axis interventions have not translated effectively to humans. The goal of RMR2 is therefore twofold:</p>
+            <ol class="list-decimal ml-6 my-3 space-y-1">
+              <li><strong>Exceed the benchmark:</strong> Find an intervention combination (E) that significantly outperforms rapamycin</li>
+              <li><strong>Independence from mTOR:</strong> Ideally achieve this without rapamycin contributing (E ≈ rE), suggesting the combination works through distinct mechanisms with better human translation potential</li>
+            </ol>
+
+            <h3 id="fw-1-3">1.3 Operating Principle: Mechanistic Uncertainty</h3>
+            <p><strong>We lack complete mechanistic understanding of how <em>any</em> intervention extends lifespan.</strong> Rather than assume biology, we use empirical inference from outcomes.</p>
+            <p>This has important implications:</p>
+            <ul class="list-disc ml-6 my-3 space-y-1">
+              <li>We cannot assume that similar outcomes imply similar mechanisms</li>
+              <li>We cannot assume that pathway knowledge from other contexts applies to lifespan extension</li>
+              <li>We can only reason from observed effect patterns, not from assumed biology</li>
+            </ul>
+            <p><strong>Operational definition of "functional rapalog":</strong> An intervention that provides no additional benefit when combined with rapamycin (rX ≈ r), suggesting it achieves the same outcome through overlapping or redundant means—regardless of whether we know the mechanism. This is testable without mechanistic knowledge.</p>
+
+            <h3 id="fw-1-4">1.4 The Damage Network</h3>
+            <p>Aging involves multiple damage types that are interconnected rather than independent. Damage type A may accelerate B; B may accelerate C; C may feed back to A. Interventions have primary targets, but effects propagate through this network via crosstalk and knock-on effects.</p>
+
+            <p><strong>This has important implications:</strong></p>
+            <ul class="list-disc ml-6 my-3 space-y-1">
+              <li>An intervention addressing damage type A may extend lifespan even if A is not itself rate-limiting, provided A's downstream effects include rate-limiting damage types</li>
+              <li>An intervention may appear to "overlap" with rapamycin not because they share a molecular target, but because their effects converge through network propagation</li>
+              <li>The position of a damage type in the network (upstream hub vs. peripheral node) matters as much as whether it is rate-limiting</li>
+              <li>Interventions affecting upstream hubs that cascade to multiple rate-limiters have higher potential value than those addressing peripheral nodes</li>
+            </ul>
+
+            <p>We cannot map the full mouse damage network, let alone the human one. But we can use empirical signals to infer network relationships and make probabilistic judgments about translation potential.</p>
+
+            <p><strong>Network position terminology:</strong></p>
+            <table>
+              <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Upstream hub</strong></td><td>Damage type whose accumulation drives multiple downstream damage types; addressing it has broad effects</td></tr>
+                <tr><td><strong>Downstream node</strong></td><td>Damage type driven by upstream processes; addressing it may have limited effect if upstream drivers continue</td></tr>
+                <tr><td><strong>Peripheral node</strong></td><td>Damage type with limited connections; addressing it affects only itself unless it happens to be rate-limiting</td></tr>
+                <tr><td><strong>Cascade</strong></td><td>The propagation of an intervention's effects through network connections (knock-on effects)</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="fw-1-5">1.5 Intervention Selection</h3>
+            <p>The eight interventions were selected to address largely different types of age-related damage, with known lifespan-extending effects in prior studies:</p>
+            <table>
+              <thead><tr><th>Intervention</th><th>Primary Target/Damage Type</th></tr></thead>
+              <tbody>
+                <tr><td>X₁: OSK</td><td>Epigenetic reprogramming</td></tr>
+                <tr><td>X₂: d-PUFAs</td><td>Lipid peroxidation</td></tr>
+                <tr><td>X₃: Oxytocin</td><td>Neuroendocrine / social signaling</td></tr>
+                <tr><td>X₄: CASIN</td><td>Cellular polarity / stem cell aging</td></tr>
+                <tr><td>X₅: Anti-IL-11</td><td>Inflammatory signaling</td></tr>
+                <tr><td>X₆: Exosomes</td><td>Intercellular communication / regeneration</td></tr>
+                <tr><td>X₇: Senolytic</td><td>Senescent cell clearance</td></tr>
+                <tr><td>X₈: rMSA</td><td>Plasma proteome / albumin function</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section 2 -->
+          <div id="fw-2" class="section">
+            <h2>2. Phase 1 Study Design</h2>
+
+            <h3 id="fw-2-1">2.1 Group Structure</h3>
+            <p>Phase 1 tests all interventions as monotherapies (with and without rapamycin) plus the full combination.</p>
+
+            <h4>Without Rapamycin:</h4>
+            <table>
+              <thead><tr><th>Group</th><th>Description</th><th>n per sex</th><th>Total</th></tr></thead>
+              <tbody>
+                <tr><td>C</td><td>Vehicle control</td><td>50</td><td>100</td></tr>
+                <tr><td>X₁ – X₈</td><td>Monotherapies (8 groups)</td><td>25</td><td>400</td></tr>
+                <tr><td>E</td><td>All 8 interventions combined</td><td>50</td><td>100</td></tr>
+              </tbody>
+            </table>
+
+            <h4>With Rapamycin:</h4>
+            <table>
+              <thead><tr><th>Group</th><th>Description</th><th>n per sex</th><th>Total</th></tr></thead>
+              <tbody>
+                <tr><td>r</td><td>Rapamycin only (benchmark)</td><td>50</td><td>100</td></tr>
+                <tr><td>rX₁ – rX₈</td><td>Monotherapy + rapamycin (8 groups)</td><td>25</td><td>400</td></tr>
+                <tr><td>rE</td><td>All 8 + rapamycin</td><td>50</td><td>100</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Phase 1 Total:</strong> 20 groups, 1,200 mice</p>
+
+            <h3 id="fw-2-2">2.2 Design Rationale</h3>
+            <p>This design enables several key comparisons:</p>
+            <h4>Individual intervention level:</h4>
+            <ul class="list-disc ml-6 my-2">
+              <li><span class="font-mono">X vs C</span> → Does intervention have any independent effect?</li>
+              <li><span class="font-mono">X vs r</span> → How does intervention compare to benchmark?</li>
+              <li><span class="font-mono bg-blue-100 px-1 rounded">rX vs r</span> → Does intervention add to rapamycin's effect? <strong>(Key test)</strong></li>
+              <li><span class="font-mono">rX vs X</span> → Does rapamycin add to intervention's effect?</li>
+            </ul>
+            <h4>Combination level:</h4>
+            <ul class="list-disc ml-6 my-2">
+              <li><span class="font-mono bg-emerald-100 px-1 rounded">E vs r</span> → Does combination beat rapamycin? <strong>(Primary success criterion)</strong></li>
+              <li><span class="font-mono bg-purple-100 px-1 rounded">rE vs E</span> → Does rapamycin add to combination? <strong>(Translation signal)</strong></li>
+              <li><span class="font-mono">rE vs r</span> → Does combination contribute beyond rapamycin?</li>
+            </ul>
+          </div>
+
+          <!-- Section 3 -->
+          <div id="fw-3" class="section">
+            <h2>3. Analysis Framework</h2>
+
+            <h3 id="fw-3-1">3.1 Interpreting Individual Patterns: rX vs r</h3>
+
+            <h4>Scenario 1: rX > r (Synergy)</h4>
+            <div class="callout callout-green">
+              <p><strong>Observation:</strong> Intervention X adds benefit beyond rapamycin alone.</p>
+              <p><strong>Interpretation:</strong> X likely acts through pathway independent of mTOR inhibition.</p>
+              <p><strong>Implications:</strong> Promising for human translation (non-mTOR mechanism). Keep in combination.</p>
+            </div>
+
+            <h4>Scenario 2: rX ≈ r (No Additional Benefit)</h4>
+            <div class="callout callout-amber">
+              <p><strong>Observation:</strong> Adding X to rapamycin provides no improvement over rapamycin alone.</p>
+              <p><strong>Three competing explanations:</strong></p>
+              <table class="mt-2">
+                <thead><tr><th>Explanation</th><th>Description</th><th>Translation</th></tr></thead>
+                <tbody>
+                  <tr style="background:#fef2f2"><td><strong>1. Target overlap</strong></td><td>X works through same/similar pathway as rapamycin</td><td>Poor</td></tr>
+                  <tr style="background:#f0fdf4"><td><strong>2. Damage-type masking</strong></td><td>X works independently, but addresses damage not rate-limiting after r</td><td>Good</td></tr>
+                  <tr style="background:#ecf9ff"><td><strong>3. Network masking</strong></td><td>X's effects propagate through nodes that r has already addressed; X's cascade is "orphaned"</td><td>Good (humans lack r)</td></tr>
+                </tbody>
+              </table>
+              <p class="mt-2"><strong>Critical limitation:</strong> Lifespan data alone cannot distinguish these explanations. All three produce rX ≈ r. Secondary endpoints are required for diagnosis (see Section 4).</p>
+            </div>
+
+            <h4>Scenario 3: rX < r (Antagonism)</h4>
+            <div class="callout callout-red">
+              <p><strong>Observation:</strong> Adding X to rapamycin <em>reduces</em> the benefit.</p>
+              <p><strong>Implications:</strong> Definitely test E-X and rE-X in Phase 2. X is likely dragging down combination performance.</p>
+            </div>
+
+            <h3 id="fw-3-2">3.2 Interpreting Combination Patterns</h3>
+
+            <h4>E vs r (Primary Success Criterion)</h4>
+            <table>
+              <thead><tr><th>Outcome</th><th>Interpretation</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr style="background:#f0fdf4"><td><strong>E >> r</strong></td><td>Primary goal achieved</td><td>Proceed to optimization</td></tr>
+                <tr style="background:#fffbeb"><td><strong>E ≈ r</strong></td><td>Combination matches but doesn't beat benchmark</td><td>Look for redundancy/antagonism</td></tr>
+                <tr style="background:#fef2f2"><td><strong>E < r</strong></td><td>Combination underperforms</td><td>Investigate interactions</td></tr>
+              </tbody>
+            </table>
+
+            <h4>rE vs E (Translation Signal)</h4>
+            <table>
+              <thead><tr><th>Outcome</th><th>Interpretation</th><th>Implication</th></tr></thead>
+              <tbody>
+                <tr><td><strong>rE >> E</strong></td><td>Rapamycin adds substantial value</td><td>Combination alone insufficient</td></tr>
+                <tr style="background:#f0fdf4"><td><strong>rE ≈ E</strong></td><td>Rapamycin adds nothing</td><td><strong>Ideal for translation</strong></td></tr>
+                <tr style="background:#fef2f2"><td><strong>rE < E</strong></td><td>Rapamycin antagonizes combination</td><td>Investigate conflicts</td></tr>
+              </tbody>
+            </table>
+
+            <h3 id="fw-3-3">3.3 Best Case Scenario</h3>
+            <div class="callout callout-green">
+              <p class="font-mono text-lg font-bold mb-2">E >> r AND E ≥ rE</p>
+              <ul class="list-disc ml-6">
+                <li>✓ Combination dramatically exceeds rapamycin benchmark</li>
+                <li>✓ Rapamycin doesn't add value to the combination</li>
+                <li>✓ Effects likely achieved through non-mTOR mechanisms</li>
+                <li>✓ Strong candidate for human translation</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div id="fw-4" class="section">
+            <h2>4. Secondary Endpoints & Tissue Banking</h2>
+
+            <p>While lifespan is the primary endpoint, the study will collect extensive functional, clinical, and biological data throughout. These secondary endpoints serve multiple critical functions.</p>
+
+            <h3>4.1 Endpoint Categories</h3>
+
+            <p><strong>Functional Assessments</strong> (longitudinal, in-life)</p>
+            <ul class="list-disc ml-6 my-2">
+              <li>Grip strength</li>
+              <li>Running wheel activity</li>
+              <li>Cognitive function (e.g., Barnes maze)</li>
+              <li>Motor coordination (e.g., rotarod)</li>
+            </ul>
+
+            <p><strong>Clinical Evaluation</strong> (longitudinal, in-life)</p>
+            <ul class="list-disc ml-6 my-2">
+              <li>Frailty index assessments</li>
+              <li>Body weight tracking</li>
+              <li>Complete blood count (CBC)</li>
+              <li>Blood chemistries</li>
+              <li>Glucose tolerance testing (potentially)</li>
+            </ul>
+
+            <p><strong>Tissue Banking</strong> (terminal and interim)</p>
+            <ul class="list-disc ml-6 my-2">
+              <li>Full necropsy at death</li>
+              <li>Blood and nearly all tissues banked</li>
+              <li>Available for targeted post-hoc analyses</li>
+            </ul>
+
+            <h3>4.2 Diagnostic Value for Distinguishing Three Explanations</h3>
+
+            <p>When rX ≈ r, secondary endpoints become <strong>diagnostic</strong> for determining whether X is a functional rapalog (concerning) or masked/network-masked (potentially fine for translation):</p>
+            <table>
+              <thead><tr><th>Lifespan Result</th><th>Secondary Endpoint Finding</th><th>Interpretation</th></tr></thead>
+              <tbody>
+                <tr><td>rX ≈ r</td><td>X improves its target biomarkers in rX vs r</td><td><strong style="color:#059669">Masking/Network masking</strong> — X is working; effects don't translate to lifespan because X addresses non-rate-limiting damage or r has blocked X's cascade</td></tr>
+                <tr><td>rX ≈ r</td><td>X shows no biomarker improvement in rX vs r</td><td>Possibly <strong style="color:#dc2626">Overlap</strong> — X may not be working in r-treated context</td></tr>
+                <tr><td>rX ≈ r</td><td>X affects mTOR pathway markers</td><td><strong style="color:#dc2626">Target overlap</strong> — X is a functional rapalog</td></tr>
+                <tr><td>rX ≈ r</td><td>X doesn't affect mTOR markers, improves different domains than r</td><td><strong style="color:#059669">Masking/Network masking</strong> — different mechanisms, different damage targets</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section 5 -->
+          <div id="fw-5" class="section">
+            <h2>5. Phase 2 Decision Logic</h2>
+
+            <h3>5.1 Phase 2 Design</h3>
+            <p>Phase 2 tests subtractive combinations: the full combination minus individual interventions.</p>
+
+            <table>
+              <thead><tr><th>Group Type</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><span class="font-mono">E – Xᵢ</span></td><td>Full combination minus intervention i</td></tr>
+                <tr><td><span class="font-mono">rE – Xᵢ</span></td><td>Full combination + rapamycin minus intervention i</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Estimated scale:</strong> ~800 additional mice (variable based on Phase 1 results)</p>
+
+            <h3>5.2 Decision Framework</h3>
+            <div class="decision-tree">Phase 1 Complete
+│
+├─► IF E > r (Primary goal achieved)
+│   │
+│   ├─► IF E ≈ rE (Rapamycin adds nothing)
+│   │   └─► Phase 2: Test E-Xᵢ to find MINIMAL EFFECTIVE COMBINATION
+│   │       (Optimization for translation practicality)
+│   │
+│   └─► IF rE >> E (Rapamycin still adds value)
+│       └─► Phase 2: May test both E-Xᵢ and rE-Xᵢ
+│           (Understand what rapamycin provides that combination doesn't)
+│
+├─► IF E ≈ r (Combination matches but doesn't beat benchmark)
+│   └─► Phase 2: Test E-Xᵢ to find REDUNDANCY or ANTAGONISM
+│       (Prioritize Xᵢ where rXᵢ ≤ r)
+│
+└─► IF E < r (Combination underperforms)
+    └─► Phase 2: Test E-Xᵢ to find ANTAGONISTS
+        (Prioritize Xᵢ where rXᵢ < r, then rXᵢ ≈ r)</div>
+
+            <h3>5.3 Phase 2 Triggers by Scenario</h3>
+            <table>
+              <thead><tr><th>Phase 1 Outcome</th><th>Phase 2 Trigger</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td>E >> r, E ≈ rE</td><td>Test E-Xᵢ for all i</td><td>Find minimal effective combination (optimization)</td></tr>
+                <tr><td>E >> r, rE >> E</td><td>Test E-Xᵢ and rE-Xᵢ</td><td>Understand rapamycin's contribution</td></tr>
+                <tr><td>E ≈ r</td><td>Test E-Xᵢ starting with flagged interventions</td><td>Find what's dragging combination down</td></tr>
+                <tr><td>E < r</td><td>Test E-Xᵢ for rX ≤ r interventions first</td><td>Identify antagonists</td></tr>
+                <tr><td>Specific pairs suspected</td><td>Consider Xᵢ + Xⱼ pair testing</td><td>Investigate pairwise interactions</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section 6 -->
+          <div id="fw-6" class="section">
+            <h2>6. Pairwise Interactions</h2>
+
+            <h3>6.1 Limitation of Phase 1</h3>
+            <p>Phase 1 cannot detect pairwise interactions between interventions (Xᵢ-Xⱼ antagonism or synergy). Such interactions would only manifest through unexpected E or rE performance.</p>
+
+            <h3>6.2 When to Consider Pairwise Testing</h3>
+
+            <div class="callout callout-slate">
+              <h4 class="font-semibold">Scenario A: E dramatically underperforms</h4>
+              <ul class="list-disc ml-6 text-sm">
+                <li>If E < r despite most rX > r, something is causing interference</li>
+                <li>After E-Xᵢ testing identifies candidate interventions, test specific pairs</li>
+              </ul>
+            </div>
+
+            <div class="callout callout-slate">
+              <h4 class="font-semibold">Scenario B: Two interventions show similar anomalous patterns</h4>
+              <ul class="list-disc ml-6 text-sm">
+                <li>If X₁ and X₂ both show rX ≈ r, test X₁ + X₂ to determine if they're redundant with each other</li>
+              </ul>
+            </div>
+
+            <h3>6.3 Incorporating Pair Testing</h3>
+
+            <h4>Option 1: Contingent Phase 1.5</h4>
+            <p>If Phase 1 raises specific questions, run a small focused study (~100-200 mice) testing 3-5 specific pairs before committing to full Phase 2.</p>
+
+            <h4>Option 2: Expand Phase 2 scope</h4>
+            <p>Include targeted pair tests (Xᵢ + Xⱼ) or double subtractions (E - Xᵢ - Xⱼ) alongside standard E-Xᵢ testing.</p>
+
+            <h4>Option 3: Statistical modeling</h4>
+            <p>Use Phase 1 data to fit a model assuming additive effects. Large residuals (E observed vs. E predicted) indicate non-additive interactions, triggering investigation.</p>
+          </div>
+
+          <!-- Section 7 -->
+          <div id="fw-7" class="section">
+            <h2>7. Design Limitations & Considerations</h2>
+            <ul class="list-disc ml-6 my-2">
+              <li><strong>Higher-order interactions:</strong> Pairwise antagonism only visible through E underperformance</li>
+              <li><strong>Statistical power:</strong> n=50 per monotherapy may miss small (5-10%) effects</li>
+              <li><strong>Masking/Network effects:</strong> rX ≈ r may reflect masking or network masking, not overlap (see Section 3)</li>
+              <li><strong>Temporal considerations:</strong> Cannot detect timing-dependent effects</li>
+            </ul>
+          </div>
+
+          <!-- Section 8 -->
+          <div id="fw-8" class="section">
+            <h2>8. Summary: Key Comparisons</h2>
+            <table>
+              <thead><tr><th>Comparison</th><th>What It Tests</th><th>Key Outcomes</th></tr></thead>
+              <tbody>
+                <tr><td><span class="font-mono">X vs C</span></td><td>Independent effect</td><td>X > C = intervention works</td></tr>
+                <tr><td><span class="font-mono">X vs r</span></td><td>Intervention vs. benchmark</td><td>X ≈ r = remarkable</td></tr>
+                <tr style="background:#eff6ff"><td><span class="font-mono font-bold">rX vs r</span></td><td><strong>Functional rapalog test</strong></td><td>rX > r = independent; rX ≈ r = possible rapalog (but may be masking/network masking); rX < r = antagonism</td></tr>
+                <tr style="background:#f0fdf4"><td><span class="font-mono font-bold">E vs r</span></td><td><strong>Primary success</strong></td><td>E > r = goal achieved</td></tr>
+                <tr style="background:#faf5ff"><td><span class="font-mono font-bold">rE vs E</span></td><td><strong>Translation signal</strong></td><td>rE ≈ E = ideal</td></tr>
+                <tr><td><span class="font-mono">E-Xᵢ vs E</span></td><td>Contribution of Xᵢ</td><td>E-Xᵢ ≈ E = passenger; E-Xᵢ < E = contributes; E-Xᵢ > E = antagonist</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section 9 -->
+          <div id="fw-9" class="section">
+            <h2>9. Glossary of Notation</h2>
+            <table>
+              <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td><span class="font-mono bg-slate-100 px-2 py-0.5 rounded">C</span></td><td>Vehicle control (no intervention)</td></tr>
+                <tr><td><span class="font-mono bg-amber-100 px-2 py-0.5 rounded">r</span></td><td>Rapamycin only (benchmark)</td></tr>
+                <tr><td><span class="font-mono bg-blue-100 px-2 py-0.5 rounded">X</span></td><td>Any single intervention (X₁ through X₈)</td></tr>
+                <tr><td><span class="font-mono bg-orange-100 px-2 py-0.5 rounded">rX</span></td><td>Intervention + rapamycin</td></tr>
+                <tr><td><span class="font-mono bg-emerald-100 px-2 py-0.5 rounded">E</span></td><td>Full combination (all 8 interventions)</td></tr>
+                <tr><td><span class="font-mono bg-rose-100 px-2 py-0.5 rounded">rE</span></td><td>Full combination + rapamycin</td></tr>
+                <tr><td><span class="font-mono bg-purple-100 px-2 py-0.5 rounded">E-Xᵢ</span></td><td>Full combination minus intervention i</td></tr>
+                <tr><td><span class="font-mono bg-purple-100 px-2 py-0.5 rounded">rE-Xᵢ</span></td><td>Full combination + rapamycin minus intervention i</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section 10 - Appendix -->
+          <div id="fw-10" class="section">
+            <h2>10. Appendix: Fundamental Translation Limitation</h2>
+
+            <p><strong>What the rX test can and cannot tell us:</strong></p>
+
+            <p>The rX ≈ r test functions as a <strong>negative filter</strong>, not a positive confirmation. It identifies interventions that likely face rapamycin's translation barrier but cannot confirm that other interventions will translate.</p>
+
+            <h3>The rX test CAN:</h3>
+            <ul class="list-disc ml-6 my-2">
+              <li>Identify interventions sharing rapamycin's molecular target (Category 1: Target overlap)</li>
+              <li>Flag interventions whose effects are masked by rapamycin's action (Category 2/3: Masking or network masking)</li>
+              <li>Reduce the hypothesis space by eliminating one class of likely failures</li>
+            </ul>
+
+            <h3>The rX test CANNOT:</h3>
+            <ul class="list-disc ml-6 my-2">
+              <li>Confirm that rX > r interventions will translate to humans</li>
+              <li>Predict human damage landscapes</li>
+              <li>Account for network topology differences between species</li>
+              <li>Guarantee that "passing" interventions address human rate-limiting damage</li>
+            </ul>
+
+            <h3>Interventions showing rX > r may still fail in humans due to:</h3>
+            <ul class="list-disc ml-6 my-2">
+              <li>Damage landscape differences (X's target may not be rate-limiting in humans)</li>
+              <li>Network position differences (upstream hub in mice might be peripheral in humans)</li>
+              <li>Life history constraints (dosing, duration, age at intervention)</li>
+              <li>Unknown human-specific barriers</li>
+            </ul>
+
+            <p><strong>Bottom line:</strong> All interventions face uncertainty regardless of rX signal. This framework improves prioritization but does not guarantee success. "Passing" the rX test is necessary but not sufficient for human translation.</p>
+
+          </div>
+
+          <!-- Footer -->
+          <div class="mt-8 pt-4 border-t border-slate-200">
+            <div class="text-center text-xs text-slate-400">
+              LEV Foundation | RMR2 Phased Study Design & Analysis Framework | February 2026
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WHY X TAB ==================== -->
+  <div id="whyx-tab" class="tab-content">
+    <div class="max-w-6xl mx-auto p-6">
+
+    <!-- Header -->
+    <div class="mb-8 pb-6 border-b-2 border-slate-300">
+      <h1 class="text-3xl font-bold text-slate-900 mb-2">Why X Might Not Add to r</h1>
+      <p class="text-lg text-slate-600">A Systematic Framework for Interpreting rX ≈ r</p>
+      <p class="text-sm text-slate-500 mt-2 italic">
+        When adding intervention X to rapamycin provides no additional benefit, what does it mean?
+      </p>
+    </div>
+
+    <!-- The Setup -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">The Setup</h2>
+
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200 text-center">
+          <div class="text-sm text-blue-600 font-medium">X vs C</div>
+          <div class="text-2xl font-bold text-blue-800 mt-1">+10%</div>
+          <div class="text-xs text-blue-600">X works</div>
+        </div>
+        <div class="bg-amber-50 rounded-lg p-4 border border-amber-200 text-center">
+          <div class="text-sm text-amber-600 font-medium">r vs C</div>
+          <div class="text-2xl font-bold text-amber-800 mt-1">+25%</div>
+          <div class="text-xs text-amber-600">r works (larger effect)</div>
+        </div>
+        <div class="bg-slate-100 rounded-lg p-4 border border-slate-300 text-center">
+          <div class="text-sm text-slate-600 font-medium">rX vs r</div>
+          <div class="text-2xl font-bold text-slate-800 mt-1">≈ 0%</div>
+          <div class="text-xs text-slate-600">X doesn't add</div>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <p class="text-amber-800">
+          <strong>The puzzle:</strong> If X and r are mechanistically independent, we'd naively expect
+          rX ≈ +35% (additive). But we see rX ≈ +25%. Why doesn't X add?
+        </p>
+      </div>
+    </div>
+
+    <!-- Category 1: Mechanistic -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+          <span class="text-red-600 font-bold">1</span>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">Category 1: Mechanistic Overlap</h2>
+      </div>
+      <p class="text-slate-600 mb-4">X and r share something mechanistically — they're not truly independent.</p>
+
+      <div class="space-y-4">
+        <!-- 1A -->
+        <div class="border-l-4 border-red-400 pl-4 py-2 bg-red-50 rounded-r-lg">
+          <h4 class="font-semibold text-red-800">1A. Target-Level Redundancy</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X and r directly affect the same molecular target (e.g., both inhibit mTOR).
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-red-200">
+              <span class="text-red-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">X's molecular signature overlaps with r's. mTOR markers similar in X, r, rX.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-red-200">
+              <span class="text-red-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Bad — X depends on mTOR, which doesn't translate.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1B -->
+        <div class="border-l-4 border-orange-400 pl-4 py-2 bg-orange-50 rounded-r-lg">
+          <h4 class="font-semibold text-orange-800">1B. Pathway-Level Convergence</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X affects a different target but the same pathway (e.g., X is upstream of mTOR).
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-orange-200">
+              <span class="text-orange-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">X alone shows mTOR pathway changes. rX shows no additional suppression vs r.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-orange-200">
+              <span class="text-orange-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Moderate concern — mTOR-adjacent biology.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1C -->
+        <div class="border-l-4 border-amber-400 pl-4 py-2 bg-amber-50 rounded-r-lg">
+          <h4 class="font-semibold text-amber-800">1C. Downstream Convergence</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X works through a different upstream pathway but converges on the same downstream effect
+            (e.g., both increase autophagy through different routes).
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-amber-200">
+              <span class="text-amber-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">X and r affect same downstream readout. Different upstream markers.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-amber-200">
+              <span class="text-amber-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Ambiguous — doesn't depend on mTOR per se, but same output biology.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category 2: Structural (Masking) -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+          <span class="text-emerald-600 font-bold">2</span>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">Category 2: Structural Masking</h2>
+      </div>
+      <p class="text-slate-600 mb-4">
+        X and r are truly independent, but X's effect is masked by the structure of how aging damage causes death.
+      </p>
+
+      <div class="space-y-4">
+        <!-- 2A -->
+        <div class="border-l-4 border-emerald-400 pl-4 py-3 bg-emerald-50 rounded-r-lg">
+          <h4 class="font-semibold text-emerald-800">2A. Rate-Limiting Damage Shift</h4>
+          <p class="text-sm text-slate-600 mb-3">
+            Aging involves multiple damage types (A, B, C...) accumulating in parallel. Death occurs when
+            the <em>first</em> damage type reaches a lethal threshold. r addresses the originally rate-limiting
+            damage. Once that's fixed, a <em>different</em> damage type becomes rate-limiting — and it's not
+            the one X addresses.
+          </p>
+
+          <div class="bg-white rounded-lg p-4 border border-emerald-200 mb-3">
+            <h5 class="font-medium text-emerald-700 mb-2">Example:</h5>
+            <div class="text-sm text-slate-600 space-y-1 font-mono">
+              <div>Untreated: B kills @ 850 (A would @ 900, C @ 920)</div>
+              <div>r-treated: B delayed to 1000, <span class="text-red-600 font-semibold">C now kills @ 920</span></div>
+              <div>rX-treated: B→1000, A→950, <span class="text-red-600 font-semibold">C still kills @ 920</span></div>
+              <div class="pt-2 text-emerald-700">Result: rX ≈ r (both limited by C)</div>
+            </div>
+          </div>
+
+          <div class="bg-emerald-100 rounded p-3 text-sm">
+            <p class="text-emerald-800">
+              <strong>Key insight:</strong> X addresses damage A, but A was <em>never going to be the cause of death</em>
+              in r-treated mice. r changed the mortality landscape.
+            </p>
+          </div>
+
+          <div class="flex gap-4 text-xs mt-3">
+            <div class="bg-white rounded p-2 border border-emerald-200">
+              <span class="text-emerald-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">X improves A-biomarkers in rX vs r, even if lifespan same. Cause of death is C, not A.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-emerald-200">
+              <span class="text-emerald-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Good — X works independently, just masked here. May work in humans if A is rate-limiting there.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2B -->
+        <div class="border-l-4 border-teal-400 pl-4 py-2 bg-teal-50 rounded-r-lg">
+          <h4 class="font-semibold text-teal-800">2B. Temporal Bottleneck Sequence</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            Similar to 2A, but emphasizing temporal ordering. r removes an early bottleneck, but the
+            <em>next</em> bottleneck in sequence isn't the one X addresses.
+          </p>
+
+          <div class="bg-white rounded-lg p-3 border border-teal-200 text-xs font-mono mb-2">
+            <div class="text-slate-500">Untreated:</div>
+            <div class="ml-2">[Birth]──[<span class="text-red-600">B kills</span>]────[A would]────[C would]</div>
+            <div class="text-slate-500 mt-1">r-treated:</div>
+            <div class="ml-2">[Birth]────────────[<span class="text-red-600">C kills</span>]──[A would]──[B would]</div>
+            <div class="text-slate-500 mt-1">rX-treated:</div>
+            <div class="ml-2">[Birth]────────────[<span class="text-red-600">C kills</span>]──[B would]──[A delayed]</div>
+          </div>
+
+          <div class="text-xs">
+            <span class="text-teal-600 font-medium">Translation:</span>
+            <span class="text-slate-600">Good — X works independently, just not next in sequence.</span>
+          </div>
+        </div>
+
+        <!-- 2C -->
+        <div class="border-l-4 border-cyan-400 pl-4 py-2 bg-cyan-50 rounded-r-lg">
+          <h4 class="font-semibold text-cyan-800">2C. Damage Hierarchy with Dependencies</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            Some damage types may be prerequisites for others. You can't die from A until B has progressed
+            past a certain point. r slows B, which delays A as a downstream consequence. X also slows A,
+            but A was already being slowed by r's effect on B.
+          </p>
+          <div class="text-xs">
+            <span class="text-cyan-600 font-medium">Translation:</span>
+            <span class="text-slate-600">Moderate — X works independently, but effect contingent on damage hierarchy (may differ between species).</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category 3: Quantitative -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+          <span class="text-blue-600 font-bold">3</span>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">Category 3: Quantitative Effects</h2>
+      </div>
+      <p class="text-slate-600 mb-4">Effect size issues that make X's contribution undetectable or compressed.</p>
+
+      <div class="space-y-4">
+        <!-- 3A -->
+        <div class="border-l-4 border-blue-400 pl-4 py-2 bg-blue-50 rounded-r-lg">
+          <h4 class="font-semibold text-blue-800">3A. Detection Threshold / Statistical Power</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X adds a real but small effect that we can't detect statistically. True rX = +30%, but with
+            n=25, we observe rX ≈ r because we can't distinguish 30% from 25%.
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-blue-200">
+              <span class="text-blue-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">Larger sample sizes would reveal rX > r.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-blue-200">
+              <span class="text-blue-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Neutral — X works, we just can't measure it well.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3B -->
+        <div class="border-l-4 border-indigo-400 pl-4 py-2 bg-indigo-50 rounded-r-lg">
+          <h4 class="font-semibold text-indigo-800">3B. Diminishing Returns / Compressed Tail</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            Each additional percentage of lifespan extension beyond a certain point is biologically "harder"
+            to achieve. r captures the accessible gains. X's potential +10% is compressed to +3% in this regime.
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-indigo-200">
+              <span class="text-indigo-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">Decreasing marginal returns when stacking any interventions. Pattern applies generally.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-indigo-200">
+              <span class="text-indigo-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Moderate — compression might apply in humans too, or might not.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category 4: Interaction -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+          <span class="text-purple-600 font-bold">4</span>
+        </div>
+        <h2 class="text-xl font-bold text-slate-800">Category 4: Biological Interactions</h2>
+      </div>
+      <p class="text-slate-600 mb-4">Neither overlap nor pure masking — real biological interactions between independent interventions.</p>
+
+      <div class="space-y-4">
+        <!-- 4A -->
+        <div class="border-l-4 border-purple-400 pl-4 py-2 bg-purple-50 rounded-r-lg">
+          <h4 class="font-semibold text-purple-800">4A. Combined Physiological Burden</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            r imposes costs (immune suppression, metabolic changes). X also imposes costs. When combined,
+            costs may sum while benefits don't fully add.
+          </p>
+          <div class="bg-white rounded p-2 text-xs font-mono border border-purple-200 mb-2">
+            Benefits of rX: min(r_benefit + X_benefit, some_limit)<br>
+            Costs of rX: r_cost + X_cost (fully additive)<br>
+            Net: costs offset X's benefit → rX ≈ r
+          </div>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-purple-200">
+              <span class="text-purple-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">Safety signals in rX not seen in r or X alone.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-purple-200">
+              <span class="text-purple-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Moderate — combination burden is real and applies to humans.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4B -->
+        <div class="border-l-4 border-fuchsia-400 pl-4 py-2 bg-fuchsia-50 rounded-r-lg">
+          <h4 class="font-semibold text-fuchsia-800">4B. Indirect Damage Acceleration</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            r's effect on damage B might indirectly accelerate damage C (e.g., immune suppression accelerates
+            infection-related damage). C becomes rate-limiting, and X doesn't address C.
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-fuchsia-200">
+              <span class="text-fuchsia-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">r-treated mice show elevated C-type damage markers vs untreated.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-fuchsia-200">
+              <span class="text-fuchsia-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Context-dependent — crosstalk may or may not exist in humans.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4C -->
+        <div class="border-l-4 border-pink-400 pl-4 py-2 bg-pink-50 rounded-r-lg">
+          <h4 class="font-semibold text-pink-800">4C. Resource Competition</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            The organism has limited "repair capacity." r consumes most of this capacity addressing damage B.
+            Not enough capacity left for X to effectively address A.
+          </p>
+          <div class="flex gap-4 text-xs">
+            <div class="bg-white rounded p-2 border border-pink-200">
+              <span class="text-pink-600 font-medium">Prediction:</span>
+              <span class="text-slate-600">Repair/regeneration markers depleted in r-treated mice.</span>
+            </div>
+            <div class="bg-white rounded p-2 border border-pink-200">
+              <span class="text-pink-600 font-medium">Translation:</span>
+              <span class="text-slate-600">Moderate — resource competition likely exists across species.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Summary: All Explanations</h2>
+
+      <div class="overflow-x-auto">
+        <table class="text-sm">
+          <thead>
+            <tr>
+              <th class="text-left">Explanation</th>
+              <th class="text-center">X independent?</th>
+              <th class="text-left">Why rX ≈ r?</th>
+              <th class="text-center">Translation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-red-50">
+              <td class="font-medium">1A. Target redundancy</td>
+              <td class="text-center text-red-600">No</td>
+              <td>Same target</td>
+              <td class="text-center"><span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">Bad</span></td>
+            </tr>
+            <tr class="bg-orange-50">
+              <td class="font-medium">1B. Pathway convergence</td>
+              <td class="text-center text-orange-600">No</td>
+              <td>Same pathway</td>
+              <td class="text-center"><span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs">Moderate</span></td>
+            </tr>
+            <tr class="bg-amber-50">
+              <td class="font-medium">1C. Downstream convergence</td>
+              <td class="text-center text-amber-600">Partial</td>
+              <td>Same output</td>
+              <td class="text-center"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs">Ambiguous</span></td>
+            </tr>
+            <tr class="bg-emerald-50">
+              <td class="font-medium">2A. Rate-limiting shift</td>
+              <td class="text-center text-emerald-600">Yes</td>
+              <td>A not rate-limiting after r</td>
+              <td class="text-center"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs">Good</span></td>
+            </tr>
+            <tr class="bg-teal-50">
+              <td class="font-medium">2B. Temporal bottleneck</td>
+              <td class="text-center text-teal-600">Yes</td>
+              <td>A not next in sequence</td>
+              <td class="text-center"><span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs">Good</span></td>
+            </tr>
+            <tr class="bg-cyan-50">
+              <td class="font-medium">2C. Damage hierarchy</td>
+              <td class="text-center text-cyan-600">Yes</td>
+              <td>A depends on B progression</td>
+              <td class="text-center"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs">Moderate</span></td>
+            </tr>
+            <tr class="bg-blue-50">
+              <td class="font-medium">3A. Detection threshold</td>
+              <td class="text-center text-blue-600">Yes</td>
+              <td>Can't measure small effect</td>
+              <td class="text-center"><span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs">Neutral</span></td>
+            </tr>
+            <tr class="bg-indigo-50">
+              <td class="font-medium">3B. Diminishing returns</td>
+              <td class="text-center text-indigo-600">Yes</td>
+              <td>Gains compressed at tail</td>
+              <td class="text-center"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs">Moderate</span></td>
+            </tr>
+            <tr class="bg-purple-50">
+              <td class="font-medium">4A. Combined burden</td>
+              <td class="text-center text-purple-600">Yes</td>
+              <td>Costs offset X benefit</td>
+              <td class="text-center"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs">Moderate</span></td>
+            </tr>
+            <tr class="bg-fuchsia-50">
+              <td class="font-medium">4B. Indirect acceleration</td>
+              <td class="text-center text-fuchsia-600">Yes</td>
+              <td>r accelerates C, C now limits</td>
+              <td class="text-center"><span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs">Context</span></td>
+            </tr>
+            <tr class="bg-pink-50">
+              <td class="font-medium">4C. Resource competition</td>
+              <td class="text-center text-pink-600">Yes</td>
+              <td>Repair capacity depleted</td>
+              <td class="text-center"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs">Moderate</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Visual: Rate-Limiting Damage -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Visualizing Rate-Limiting Damage Shift</h2>
+
+      <p class="text-sm text-slate-600 mb-4">
+        Aging involves multiple damage types (A, B, C) accumulating toward lethal thresholds.
+        Death occurs when the first damage type crosses its threshold. Different interventions
+        address different damage types.
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- Untreated -->
+        <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+          <h4 class="font-semibold text-slate-700 mb-3 text-center">C: Untreated (Control)</h4>
+          <svg viewBox="0 0 220 150" class="w-full">
+            <!-- Damage bars -->
+            <text x="10" y="25" class="text-xs fill-slate-500">Damage A</text>
+            <rect x="70" y="15" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="15" width="65" height="16" fill="#3b82f6" rx="2"/>
+
+            <text x="10" y="55" class="text-xs fill-slate-500">Damage B</text>
+            <rect x="70" y="45" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="45" width="95" height="16" fill="#f59e0b" rx="2"/>
+            <text x="172" y="57" class="text-xs fill-red-500">★</text>
+
+            <text x="10" y="85" class="text-xs fill-slate-500">Damage C</text>
+            <rect x="70" y="75" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="75" width="55" height="16" fill="#8b5cf6" rx="2"/>
+
+            <!-- Threshold line -->
+            <line x1="165" y1="10" x2="165" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="168" y="108" class="text-xs fill-red-500">lethal</text>
+
+            <!-- Result -->
+            <text x="115" y="130" text-anchor="middle" class="text-sm font-bold fill-amber-600">B kills first</text>
+            <text x="115" y="145" text-anchor="middle" class="text-xs fill-slate-500">Death @ 850 days (baseline)</text>
+          </svg>
+        </div>
+
+        <!-- X-treated -->
+        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <h4 class="font-semibold text-blue-700 mb-3 text-center">X: X-treated</h4>
+          <svg viewBox="0 0 220 150" class="w-full">
+            <!-- Damage bars -->
+            <text x="10" y="25" class="text-xs fill-slate-500">Damage A</text>
+            <rect x="70" y="15" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="15" width="40" height="16" fill="#3b82f6" rx="2"/>
+            <text x="112" y="27" class="text-xs fill-blue-600 font-medium">↓ X</text>
+
+            <text x="10" y="55" class="text-xs fill-slate-500">Damage B</text>
+            <rect x="70" y="45" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="45" width="95" height="16" fill="#f59e0b" rx="2"/>
+            <text x="172" y="57" class="text-xs fill-red-500">★</text>
+
+            <text x="10" y="85" class="text-xs fill-slate-500">Damage C</text>
+            <rect x="70" y="75" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="75" width="60" height="16" fill="#8b5cf6" rx="2"/>
+
+            <!-- Threshold line -->
+            <line x1="165" y1="10" x2="165" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="168" y="108" class="text-xs fill-red-500">lethal</text>
+
+            <!-- Result -->
+            <text x="115" y="130" text-anchor="middle" class="text-sm font-bold fill-amber-600">B still kills</text>
+            <text x="115" y="145" text-anchor="middle" class="text-xs fill-blue-600">Death @ 935 days (+10%)</text>
+          </svg>
+          <p class="text-xs text-blue-700 mt-2 text-center">X reduces A, providing resilience. B still dominates, but mice live longer.</p>
+        </div>
+
+        <!-- r-treated -->
+        <div class="bg-amber-50 rounded-lg p-4 border border-amber-200">
+          <h4 class="font-semibold text-amber-700 mb-3 text-center">r: r-treated (Rapamycin)</h4>
+          <svg viewBox="0 0 220 150" class="w-full">
+            <!-- Damage bars -->
+            <text x="10" y="25" class="text-xs fill-slate-500">Damage A</text>
+            <rect x="70" y="15" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="15" width="70" height="16" fill="#3b82f6" rx="2"/>
+
+            <text x="10" y="55" class="text-xs fill-slate-500">Damage B</text>
+            <rect x="70" y="45" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="45" width="45" height="16" fill="#f59e0b" rx="2"/>
+            <text x="117" y="57" class="text-xs fill-amber-600 font-medium">↓ r</text>
+
+            <text x="10" y="85" class="text-xs fill-slate-500">Damage C</text>
+            <rect x="70" y="75" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="75" width="92" height="16" fill="#8b5cf6" rx="2"/>
+            <text x="172" y="87" class="text-xs fill-red-500">★</text>
+
+            <!-- Threshold line -->
+            <line x1="165" y1="10" x2="165" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="168" y="108" class="text-xs fill-red-500">lethal</text>
+
+            <!-- Result -->
+            <text x="115" y="130" text-anchor="middle" class="text-sm font-bold fill-purple-600">C now kills</text>
+            <text x="115" y="145" text-anchor="middle" class="text-xs fill-amber-600">Death @ 1060 days (+25%)</text>
+          </svg>
+          <p class="text-xs text-amber-700 mt-2 text-center">r dramatically reduces B. C becomes rate-limiting.</p>
+        </div>
+
+        <!-- rX-treated -->
+        <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
+          <h4 class="font-semibold text-emerald-700 mb-3 text-center">rX: r + X treated</h4>
+          <svg viewBox="0 0 220 150" class="w-full">
+            <!-- Damage bars -->
+            <text x="10" y="25" class="text-xs fill-slate-500">Damage A</text>
+            <rect x="70" y="15" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="15" width="40" height="16" fill="#3b82f6" rx="2"/>
+            <text x="112" y="27" class="text-xs fill-blue-600 font-medium">↓ X</text>
+
+            <text x="10" y="55" class="text-xs fill-slate-500">Damage B</text>
+            <rect x="70" y="45" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="45" width="45" height="16" fill="#f59e0b" rx="2"/>
+            <text x="117" y="57" class="text-xs fill-amber-600 font-medium">↓ r</text>
+
+            <text x="10" y="85" class="text-xs fill-slate-500">Damage C</text>
+            <rect x="70" y="75" width="100" height="16" fill="#e2e8f0" rx="2"/>
+            <rect x="70" y="75" width="92" height="16" fill="#8b5cf6" rx="2"/>
+            <text x="172" y="87" class="text-xs fill-red-500">★</text>
+
+            <!-- Threshold line -->
+            <line x1="165" y1="10" x2="165" y2="100" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="168" y="108" class="text-xs fill-red-500">lethal</text>
+
+            <!-- Result -->
+            <text x="115" y="130" text-anchor="middle" class="text-sm font-bold fill-purple-600">C still kills</text>
+            <text x="115" y="145" text-anchor="middle" class="text-xs fill-slate-600">Death @ 1060 days (= r alone)</text>
+          </svg>
+          <p class="text-xs text-emerald-700 mt-2 text-center">X reduces A, but A was never going to kill. C still rate-limiting.</p>
+        </div>
+      </div>
+
+      <!-- Summary box -->
+      <div class="bg-white rounded-lg border-2 border-slate-300 p-4 mb-4">
+        <h4 class="font-semibold text-slate-800 mb-2">Summary of Outcomes:</h4>
+        <div class="grid grid-cols-4 gap-2 text-sm text-center">
+          <div class="bg-slate-100 rounded p-2">
+            <div class="font-medium text-slate-700">C (Control)</div>
+            <div class="text-slate-600">850 days</div>
+            <div class="text-xs text-slate-500">baseline</div>
+          </div>
+          <div class="bg-blue-100 rounded p-2">
+            <div class="font-medium text-blue-700">X</div>
+            <div class="text-blue-600">935 days</div>
+            <div class="text-xs text-blue-500">+10% ✓</div>
+          </div>
+          <div class="bg-amber-100 rounded p-2">
+            <div class="font-medium text-amber-700">r</div>
+            <div class="text-amber-600">1060 days</div>
+            <div class="text-xs text-amber-500">+25% ✓</div>
+          </div>
+          <div class="bg-slate-100 rounded p-2 border-2 border-red-300">
+            <div class="font-medium text-slate-700">rX</div>
+            <div class="text-slate-600">1060 days</div>
+            <div class="text-xs text-red-500">= r (no add)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-emerald-100 rounded-lg border border-emerald-200">
+        <p class="text-sm text-emerald-800 mb-2">
+          <strong>Key insight:</strong> X works alone (+10%) because reducing Damage A provides resilience
+          even when B is rate-limiting. But once r removes B from the picture, Damage C becomes rate-limiting —
+          and X doesn't address C.
+        </p>
+        <p class="text-sm text-emerald-800">
+          X successfully reduces Damage A in rX (blue bar is shorter). But it doesn't extend lifespan because
+          A was never going to be the cause of death in r-treated mice. This is <strong>masking</strong>, not overlap.
+          X works through a completely independent mechanism — it's just addressing the "wrong" damage type in this context.
+        </p>
+      </div>
+    </div>
+
+    <!-- Empirical Tests -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Empirical Tests to Distinguish Categories</h2>
+
+      <div class="space-y-4">
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">1</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Biomarker Analysis</h4>
+            <p class="text-sm text-slate-600">
+              If X addresses damage type A, does rX show improved A-markers vs r, even if lifespan doesn't differ?
+            </p>
+            <div class="mt-1 text-xs">
+              <span class="text-emerald-600">Yes → Masking (2A/2B)</span> ·
+              <span class="text-red-600">No → Possibly overlap (1A/1B/1C)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">2</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Cross-Intervention Pattern</h4>
+            <p class="text-sm text-slate-600">
+              Do most/all rX ≈ r? Or only specific interventions?
+            </p>
+            <div class="mt-1 text-xs">
+              <span class="text-indigo-600">Most/all rX ≈ r → Diminishing returns (3B)</span> ·
+              <span class="text-red-600">Only specific rX ≈ r → Those X's overlap or are specifically masked</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Cause-of-Death Analysis</h4>
+            <p class="text-sm text-slate-600">
+              What do r-treated mice actually die from? Histopathology and necropsy data.
+            </p>
+            <div class="mt-1 text-xs">
+              <span class="text-emerald-600">Die from damage C (not A or B) → Supports masking</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">4</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Pathway Markers</h4>
+            <p class="text-sm text-slate-600">
+              Does X affect mTOR signaling (p-S6K1, p-4EBP1)?
+            </p>
+            <div class="mt-1 text-xs">
+              <span class="text-red-600">Yes → Overlap (1A/1B)</span> ·
+              <span class="text-emerald-600">No → X is mechanistically independent (Categories 2-4)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">5</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Safety/Burden Analysis</h4>
+            <p class="text-sm text-slate-600">
+              Do safety signals appear in rX that don't appear in r or X alone?
+            </p>
+            <div class="mt-1 text-xs">
+              <span class="text-purple-600">Yes → Combined burden (4A)</span> ·
+              <span class="text-slate-600">No → Not a burden explanation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mapping to the Three-Explanation Framework -->
+    <div class="bg-slate-100 rounded-xl border border-slate-300 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Mapping to the RMR2 Three-Explanation Framework</h2>
+      <p class="text-sm text-slate-700 mb-4">
+        The RMR2 study framework uses three primary explanations for rX ≈ r, organized around
+        the question that matters most: <strong>does X work through biology independent of rapamycin?</strong>
+        The detailed categories above map onto this framework as follows:
+      </p>
+
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div class="bg-white rounded-lg p-4 border border-red-200">
+          <h4 class="font-semibold text-red-700 mb-2 text-sm">1. Target Overlap</h4>
+          <p class="text-xs text-slate-600 mb-2">X works through the same or converging pathways as rapamycin.</p>
+          <div class="text-xs text-slate-500 border-t border-slate-200 pt-2">
+            <strong>Corresponds to:</strong> Category 1 (1A–1C)
+          </div>
+          <div class="mt-2 text-xs text-red-600 font-medium">Translation: Poor</div>
+        </div>
+        <div class="bg-white rounded-lg p-4 border border-emerald-200">
+          <h4 class="font-semibold text-emerald-700 mb-2 text-sm">2. Damage-Type Masking</h4>
+          <p class="text-xs text-slate-600 mb-2">X works independently but addresses damage that isn't rate-limiting after r.</p>
+          <div class="text-xs text-slate-500 border-t border-slate-200 pt-2">
+            <strong>Corresponds to:</strong> Category 2 (2A–2C)
+          </div>
+          <div class="mt-2 text-xs text-emerald-600 font-medium">Translation: Good</div>
+        </div>
+        <div class="bg-white rounded-lg p-4 border border-purple-200">
+          <h4 class="font-semibold text-purple-700 mb-2 text-sm">3. Network Masking</h4>
+          <p class="text-xs text-slate-600 mb-2">X's effects propagate through damage network nodes that r has already addressed.</p>
+          <div class="text-xs text-slate-500 border-t border-slate-200 pt-2">
+            <strong>Corresponds to:</strong> Category 4 (especially 4B, 4C) — r reshapes the damage network, blocking X's downstream propagation
+          </div>
+          <div class="mt-2 text-xs text-purple-600 font-medium">Translation: Good (humans lack r context)</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg p-3 border border-slate-200">
+        <p class="text-xs text-slate-600">
+          <strong>Category 3</strong> (quantitative effects: detection threshold, diminishing returns) and
+          <strong>Category 4A</strong> (combined physiological burden) represent additional considerations
+          that can apply alongside any of the three primary explanations. They are study design and
+          pharmacological factors rather than fundamental biological explanations for why X doesn't add to r.
+        </p>
+      </div>
+    </div>
+
+    <!-- Translation Implications -->
+    <div class="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Why This Matters for Human Translation</h2>
+
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg p-4 border border-red-200">
+          <h4 class="font-semibold text-red-700 mb-2">If rX ≈ r due to Overlap (Category 1)</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X works through mTOR or converging pathways. X is a "functional rapalog."
+          </p>
+          <div class="bg-red-50 rounded p-2 text-sm text-red-700">
+            <strong>Translation:</strong> Probably won't work in humans. mTOR interventions don't translate well.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-4 border border-emerald-200">
+          <h4 class="font-semibold text-emerald-700 mb-2">If rX ≈ r due to Masking (Category 2)</h4>
+          <p class="text-sm text-slate-600 mb-2">
+            X works through an independent mechanism. X addresses damage that isn't rate-limiting in r-treated mice.
+          </p>
+          <div class="bg-emerald-50 rounded p-2 text-sm text-emerald-700">
+            <strong>Translation:</strong> Might still work in humans because:
+            <ul class="list-disc list-inside mt-1 text-xs">
+              <li>Damage hierarchy may differ in humans</li>
+              <li>The damage X addresses might be rate-limiting in humans</li>
+              <li>Humans won't be on rapamycin (masking context doesn't apply)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Takeaway -->
+    <div class="bg-slate-800 rounded-xl p-6 mb-6 text-white">
+      <h2 class="text-xl font-bold mb-4">Key Takeaway for RMR2</h2>
+      <p class="text-slate-200 mb-4">
+        The framework's concern about "functional rapalogs" is really about <strong>Category 1</strong> —
+        interventions that work through mTOR or converging pathways and therefore won't translate to humans.
+      </p>
+      <p class="text-slate-200 mb-4">
+        But if rX ≈ r due to <strong>Category 2 (masking)</strong>, the intervention is NOT a rapalog —
+        it just addresses damage that isn't rate-limiting in rapamycin-treated mice. This intervention
+        might still translate to humans if:
+      </p>
+      <ul class="text-slate-200 space-y-2 ml-4 mb-4">
+        <li>• The damage it addresses IS rate-limiting in humans, OR</li>
+        <li>• The damage hierarchy is different in humans, OR</li>
+        <li>• Humans aren't on rapamycin (so the masking context doesn't apply)</li>
+      </ul>
+      <p class="text-emerald-300 font-medium">
+        Tissue banking and secondary endpoints are critical. Biomarkers, cause-of-death analysis, and
+        pathway markers can distinguish overlap from masking — and determine whether X is worth pursuing
+        for human translation despite showing rX ≈ r in mice.
+      </p>
+    </div>
+
+    <!-- What's Missing -->
+    <div class="bg-amber-50 rounded-xl border border-amber-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-amber-800 mb-4">What Might Be Missing?</h2>
+      <p class="text-slate-700 mb-4">
+        Additional explanations that may not be fully captured in the categories above:
+      </p>
+
+      <div class="space-y-4">
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm">1</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Hormetic Dose-Response</h4>
+            <p class="text-sm text-slate-600">
+              X's benefit might depend on a specific dose window (hormesis). In combination with r,
+              the effective "stress" or "signal" level might be pushed outside this optimal window —
+              either too much total stress or the wrong type of stress response.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm">2</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Feedback Regulation</h4>
+            <p class="text-sm text-slate-600">
+              X's target might be under homeostatic control. r might trigger compensatory feedback
+              mechanisms that counteract X's effect — not through shared pathways, but through
+              regulatory crosstalk.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm">3</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Sex-Specific Interactions</h4>
+            <p class="text-sm text-slate-600">
+              The masking vs overlap pattern might differ by sex. RMR1 showed the r+T requirement
+              existed only in males — females showed independent effects. The category of explanation
+              might itself be sex-dependent.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm">4</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Timing / Temporal Interactions</h4>
+            <p class="text-sm text-slate-600">
+              X might need to act at a specific life stage or within a specific temporal window.
+              If r alters the aging trajectory (shifting when different damage types become relevant),
+              X's optimal intervention window might shift or close entirely.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-start">
+          <div class="flex-shrink-0 w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-bold text-sm">5</div>
+          <div>
+            <h4 class="font-semibold text-slate-800">Epiphenomenal Effects</h4>
+            <p class="text-sm text-slate-600">
+              X's measured effect on damage A might be real but epiphenomenal — X doesn't actually
+              extend lifespan through reducing A, but through some other unmeasured effect that happens
+              to correlate with A reduction. In the r context, that unmeasured effect might be absent.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Implications for Framework -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Implications for the RMR2 Framework</h2>
+
+      <div class="space-y-4">
+        <div class="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
+          <h4 class="font-semibold text-emerald-800 mb-2">Secondary Endpoints Become Diagnostic</h4>
+          <p class="text-sm text-slate-700">
+            Tissue banking and functional assessments aren't just "nice to have" — they're essential
+            for distinguishing overlap from masking. If rX shows improved A-biomarkers vs r (even with
+            same lifespan), that's evidence for masking, not overlap.
+          </p>
+        </div>
+
+        <div class="bg-purple-50 rounded-lg p-4 border border-purple-200">
+          <h4 class="font-semibold text-purple-800 mb-2">Cause-of-Death Data is Critical</h4>
+          <p class="text-sm text-slate-700">
+            Necropsy and histopathology data can directly test the rate-limiting damage hypothesis.
+            If r-treated mice die from damage type C (not A or B), and X addresses A, that explains
+            why X doesn't add — and suggests X might work in contexts where A is rate-limiting.
+          </p>
+        </div>
+
+        <div class="bg-amber-50 rounded-lg p-4 border border-amber-200">
+          <h4 class="font-semibold text-amber-800 mb-2">rX ≈ r Is Not Sufficient to Abandon X</h4>
+          <p class="text-sm text-slate-700">
+            We explicitly note that rX ≈ r is <strong>not sufficient</strong> to
+            classify X as a "functional rapalog" or exclude it from further consideration. Additional evidence
+            (pathway markers, biomarkers, cause-of-death) is needed to distinguish overlap from masking.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 pt-4 border-t border-slate-200">
+      <div class="text-center text-xs text-slate-400">
+        LEV Foundation | RMR2 Phased Study Design & Analysis Framework | February 2026
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+  <!-- Tab switching script -->
+  <script>
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected tab
+      document.getElementById(tabName + '-tab').classList.add('active');
+      event.target.classList.add('active');
+
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+  </script>
+
+</body>
+</html>
