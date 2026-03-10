@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RMR2: Robust Mouse Rejuvenation 2 — Executive Summary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace; }
+    .intervention-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+    .intervention-card { background: #f5f3ff; border: 1px solid #c4b5fd; border-radius: 0.5rem; padding: 0.6rem; text-align: center; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Header -->
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-6 py-6">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-sm font-medium text-indigo-600 mb-1">LEV Foundation</p>
+          <h1 class="text-2xl font-bold text-slate-900">RMR2: Robust Mouse Rejuvenation 2</h1>
+          <p class="text-slate-500 mt-1">Phased Study Design — Executive Summary</p>
+        </div>
+        <div class="text-right text-sm text-slate-400 mt-1">
+          <div>March 2026</div>
+          <div class="text-xs mt-1">Full framework: v3.5</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-8 space-y-8">
+
+    <!-- ======================== THE PROBLEM ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">The Problem</h2>
+      <p class="text-slate-600 leading-relaxed mb-3">
+        The best single-intervention lifespan results in mice started at middle age — rapamycin and calorie restriction — each extend median lifespan by roughly 3–4 months. This ceiling has held for over a decade. To dramatically exceed it, we need interventions that address damage these approaches do not.
+      </p>
+      <p class="text-slate-600 leading-relaxed">
+        Redundant interventions — those that work through the same biological channels — are unlikely to add materially to a combination. The challenge is that we lack complete mechanistic understanding of how <em>any</em> intervention extends lifespan. We cannot predict from first principles which interventions will be redundant and which will be additive.
+      </p>
+    </section>
+
+    <!-- ======================== THE APPROACH ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">The Approach</h2>
+      <p class="text-slate-600 leading-relaxed mb-4">
+        RMR2 is a phased longevity study that tests whether a carefully chosen combination of 8 interventions — each targeting a different type of age-related damage — can significantly exceed the rapamycin benchmark. Rather than assume biology, we use empirical inference from outcomes to guide decisions.
+      </p>
+
+      <!-- 8 Interventions -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+        <h3 class="font-semibold text-slate-700 mb-3 text-sm">8 Interventions (selected for non-overlapping biology)</h3>
+        <div class="intervention-grid">
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₁</div><div class="text-sm font-medium text-violet-800">OSK</div><div class="text-xs text-slate-400">Epigenetic reprogramming</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₂</div><div class="text-sm font-medium text-violet-800">d-PUFAs</div><div class="text-xs text-slate-400">Membrane oxidation</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₃</div><div class="text-sm font-medium text-violet-800">Oxytocin</div><div class="text-xs text-slate-400">Tissue regeneration</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₄</div><div class="text-sm font-medium text-violet-800">CASIN</div><div class="text-xs text-slate-400">Stem cell polarity</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₅</div><div class="text-sm font-medium text-violet-800">Anti-IL-11</div><div class="text-xs text-slate-400">Inflammatory signaling</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₆</div><div class="text-sm font-medium text-violet-800">Exosomes</div><div class="text-xs text-slate-400">Systemic rejuvenation</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₇</div><div class="text-sm font-medium text-violet-800">Senolytic</div><div class="text-xs text-slate-400">Senescent cell clearance</div></div>
+          <div class="intervention-card"><div class="text-xs text-violet-500 mb-0.5">X₈</div><div class="text-sm font-medium text-violet-800">rMSA</div><div class="text-xs text-slate-400">Blood composition</div></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-3 italic">Selection favored interventions with known lifespan effects and published evidence suggesting non-overlapping biology with rapamycin and with each other.</p>
+      </div>
+    </section>
+
+    <!-- ======================== STUDY DESIGN ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">Study Design</h2>
+
+      <!-- Pilot -->
+      <div class="bg-violet-50 border border-violet-200 rounded-xl p-5 mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="bg-violet-200 text-violet-800 px-2.5 py-0.5 rounded-full text-xs font-semibold">Current Stage</div>
+          <h3 class="font-semibold text-violet-900">Pilot Validation</h3>
+        </div>
+        <p class="text-sm text-violet-800">Validating and de-risking each of the 8 interventions before the main study. GO/NO-GO gate per intervention.</p>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-4">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full text-xs font-semibold">Phase 1</div>
+          <h3 class="font-semibold text-slate-800">Monotherapy & Full Combination</h3>
+          <span class="text-sm text-slate-400 ml-auto">~1,200 mice · 20 groups</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+          <div>
+            <div class="text-xs font-medium text-slate-500 mb-2 pb-1 border-b">Without Rapamycin</div>
+            <div class="space-y-1.5">
+              <div class="flex justify-between p-1.5 bg-slate-50 rounded"><span class="text-slate-700 font-medium">C</span><span class="text-slate-500">Vehicle control</span></div>
+              <div class="flex justify-between p-1.5 bg-blue-50 rounded"><span class="text-blue-700 font-medium">X₁ – X₈</span><span class="text-blue-600">8 monotherapies</span></div>
+              <div class="flex justify-between p-1.5 bg-emerald-50 rounded border border-emerald-200"><span class="text-emerald-700 font-semibold">E</span><span class="text-emerald-600 font-medium">All 8 combined</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="text-xs font-medium text-amber-600 mb-2 pb-1 border-b border-amber-200">With Rapamycin</div>
+            <div class="space-y-1.5">
+              <div class="flex justify-between p-1.5 bg-amber-50 rounded"><span class="text-amber-700 font-medium">r</span><span class="text-amber-600">Rapamycin benchmark</span></div>
+              <div class="flex justify-between p-1.5 bg-orange-50 rounded"><span class="text-orange-700 font-medium">rX₁ – rX₈</span><span class="text-orange-600">8 mono + rapa</span></div>
+              <div class="flex justify-between p-1.5 bg-rose-50 rounded border border-rose-200"><span class="text-rose-700 font-semibold">rE</span><span class="text-rose-600 font-medium">All 8 + rapa</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="bg-purple-100 text-purple-700 px-2.5 py-0.5 rounded-full text-xs font-semibold">Phase 2</div>
+          <h3 class="font-semibold text-slate-700">Subtractive Testing</h3>
+          <span class="text-sm text-slate-400 ml-auto">~600–800 mice</span>
+        </div>
+        <p class="text-sm text-slate-600">Conditional on Phase 1 results. Remove one intervention at a time (E−X<sub>i</sub>) to identify which components are essential and which are passengers, and to find the minimal effective combination.</p>
+      </div>
+    </section>
+
+    <!-- ======================== KEY COMPARISONS ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">Key Comparisons</h2>
+      <p class="text-slate-600 text-sm mb-4">Every arm is compared against rapamycin as the benchmark. Three comparisons carry the core logic:</p>
+
+      <div class="space-y-3">
+        <div class="flex items-center gap-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+          <span class="font-mono text-blue-700 font-bold text-lg w-24 flex-shrink-0 text-center">rX vs r</span>
+          <div>
+            <span class="font-medium text-blue-800">Does intervention X add anything to rapamycin?</span>
+            <p class="text-xs text-blue-600 mt-0.5">Tests whether each intervention addresses damage rapamycin misses.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+          <span class="font-mono text-emerald-700 font-bold text-lg w-24 flex-shrink-0 text-center">E vs r</span>
+          <div>
+            <span class="font-medium text-emerald-800">Does the combination beat rapamycin?</span>
+            <p class="text-xs text-emerald-600 mt-0.5">The primary goal of the entire study.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 p-4 bg-purple-50 border border-purple-200 rounded-xl">
+          <span class="font-mono text-purple-700 font-bold text-lg w-24 flex-shrink-0 text-center">rE vs E</span>
+          <div>
+            <span class="font-medium text-purple-800">Does rapamycin add to the combination?</span>
+            <p class="text-xs text-purple-600 mt-0.5">Translation signal — if E ≈ rE, the benefit isn't rapamycin-dependent, increasing clinical flexibility.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== INTERPRETING rX ≈ r ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">The Nuance: When rX ≈ r</h2>
+      <p class="text-slate-600 leading-relaxed mb-4">
+        If adding X to rapamycin doesn't extend lifespan further, the naive interpretation is that X is redundant with rapamycin. But there are three competing explanations, and only one implies true redundancy:
+      </p>
+
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+          <div class="font-semibold text-red-800 mb-1 text-sm">1. Target Overlap</div>
+          <p class="text-xs text-red-700 mb-2">X works through the same pathway as rapamycin.</p>
+          <div class="text-xs text-red-600 font-medium bg-red-100 rounded px-2 py-1">Truly redundant</div>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+          <div class="font-semibold text-green-800 mb-1 text-sm">2. Damage-Type Masking</div>
+          <p class="text-xs text-green-700 mb-2">X works independently, but the damage it fixes isn't rate-limiting after rapamycin.</p>
+          <div class="text-xs text-green-600 font-medium bg-green-100 rounded px-2 py-1">Not redundant — may help without r</div>
+        </div>
+        <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+          <div class="font-semibold text-purple-800 mb-1 text-sm">3. Network Masking</div>
+          <p class="text-xs text-purple-700 mb-2">X's effects propagate through nodes rapamycin already addressed.</p>
+          <div class="text-xs text-purple-600 font-medium bg-purple-100 rounded px-2 py-1">Not redundant — masked only in r context</div>
+        </div>
+      </div>
+
+      <div class="mt-3 p-3 bg-slate-100 rounded-lg">
+        <p class="text-sm text-slate-700">
+          <strong>Why this matters:</strong> Masking and network masking mean X may still work in humans, where the damage network topology differs. The framework uses secondary endpoints (biomarkers, mTOR markers, cause of death) to distinguish these explanations rather than defaulting to the "redundant" interpretation.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================== BEST CASE ======================== -->
+    <section>
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 rounded-xl p-5">
+        <h2 class="text-lg font-bold text-green-800 mb-2">Best-Case Outcome</h2>
+        <div class="flex items-center gap-4 mb-3">
+          <div class="font-mono text-xl text-green-700 font-bold">E >> r</div>
+          <span class="text-green-600 font-medium">AND</span>
+          <div class="font-mono text-xl text-green-700 font-bold">E ≈ rE</div>
+        </div>
+        <p class="text-sm text-green-700">
+          The combination dramatically exceeds the rapamycin benchmark, and rapamycin adds nothing — meaning the benefit is not dependent on mTOR inhibition. This would represent the first robust demonstration that combinatorial approaches to aging damage can break through the single-intervention ceiling, while maximizing flexibility for clinical development pathways.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================== WHY THIS DESIGN ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">Why This Design</h2>
+      <div class="space-y-3 text-slate-600">
+        <p class="leading-relaxed">
+          <strong class="text-slate-700">Rapamycin as benchmark, not assumption.</strong> Using the best known single intervention as the comparator means every result is calibrated against the current state-of-the-art. We don't need to assume how rapamycin works — we use it as a yardstick.
+        </p>
+        <p class="leading-relaxed">
+          <strong class="text-slate-700">Full combination first.</strong> Testing all 8 together before testing subsets avoids the combinatorial explosion of pairwise testing (28 pairs, 56 triples, …). If the combination works, Phase 2 efficiently identifies the essential components through subtraction.
+        </p>
+        <p class="leading-relaxed">
+          <strong class="text-slate-700">Epistemically honest.</strong> The framework doesn't pretend to know which damage pathways are rate-limiting or how interventions interact at the network level. It uses outcomes to generate hypotheses, secondary endpoints to test them, and a structured decision tree to guide Phase 2.
+        </p>
+        <p class="leading-relaxed">
+          <strong class="text-slate-700">Translation-aware.</strong> The rE vs E comparison directly tests whether the combination's benefit is rapamycin-dependent. If not, clinical development has more flexibility — important because rapamycin's immunosuppressive side effects complicate human use.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================== SCALE & STATUS ======================== -->
+    <section>
+      <h2 class="text-lg font-bold text-slate-800 mb-3">Scale & Status</h2>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 text-center">
+          <div class="text-3xl font-bold text-slate-800">~2,000</div>
+          <div class="text-sm text-slate-500 mt-1">Total mice (both phases)</div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 text-center">
+          <div class="text-3xl font-bold text-slate-800">20</div>
+          <div class="text-sm text-slate-500 mt-1">Phase 1 groups</div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 text-center">
+          <div class="text-3xl font-bold text-violet-700">Pilots</div>
+          <div class="text-sm text-slate-500 mt-1">Current stage</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-6 border-t border-slate-200">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span>LEV Foundation · Lewis · RMR2 Executive Summary · March 2026</span>
+        <span>Full framework available on request (v3.5)</span>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
